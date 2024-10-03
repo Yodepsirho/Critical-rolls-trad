@@ -55,29 +55,87 @@ label {font-weight:bold}
   </head>
 
   <body>
-    <h2> Réussites et échecs</h2>
+    <h2> Echecs critiques</h2>
 
     <div>
-        <div class="select" style="margin-bottom: 20px;">
-            <select name="select" id="ChoixTableCritique" class="ChoixTable">
-            <option value="reussite" selected> Réussite </option>
-            <option value="echec"> Echec </option>
-            </select>
-        </div>
+      <div class="select" style="margin-bottom: 20px;">
+          <select name="select" id="ChoixTableEchec" class="ChoixTable">
+          <option value="EchecCritiqueCac"> Càc </option>
+          <option value="EchecCritiqueDist"> Distance </option>
+          <option value="EchecCritiqueMains"> Mains nues </option>
+          <option value="EchecCritiqueMagique"> Magique </option>
+          </select>
+      </div>
+      <div class="espace"></div>
+      <div class="form">
+      <label for="D10"> D10 : </label>
+      <input type="number" required id="D10" class="champsEffet">
+      <label for="D6"> D6 : </label>
+      <input type="number" required id="D6" class="champsEffet">
+      <input type="submit" value="Effet" class="EchecSubmit">
+      </div>
 
-        <div class="espace"></div>
-        
-        <div class="form">
-        <label for="D100"> D100 : </label>
-        <input type="number" required id="D100" class="champsEffet">
-        <input type="submit" value="Effet" class="EffetCritiqueSubmit">
-        </div>
+  </div>
+  
+  <div class="resultats">
+    <p class="ResultatEchecCritique"></p>
+  </div>
 
-    </div>
-    
-    <div class="resultats">
-      <p class="ResultatEffetCritique"></p>
-    </div>
+  
+
+    <h2> Réussite critique du MJ</h2>
+
+    <div>
+      <div class="select" style="margin-bottom: 20px;">
+          <select name="select" id="ChoixTableSuccesMJ" class="ChoixTable">
+            <option value="SuccesCritiqueMJTranchant"> Tranchant </option>
+            <option value="SuccesCritiqueMJPerforant"> Perforant </option>
+            <option value="SuccesCritiqueMJContondant"> Contondant </option>
+            <option value="SuccesCritiqueMJMagique"> Magique </option>
+          </select>
+      </div>
+      <div class="espace"></div>
+      <div class="form">
+      <label for="D10"> D10 : </label>
+      <input type="number" required id="D10" class="champsEffet">
+      <label for="D6"> D6 : </label>
+      <input type="number" required id="D6" class="champsEffet">
+      <input type="submit" value="Effet" class="SuccesMJSubmit">
+      </div>
+
+  </div>
+  
+  <div class="resultats">
+    <p class="ResultatSuccesMJ"></p>
+  </div>
+
+
+    <h2> Réussite critique du Joueur</h2>
+
+    <div>
+      <div class="select" style="margin-bottom: 20px;">
+          <select name="select" id="ChoixTableSuccesPJ" class="ChoixTable">
+            <option value="SuccesCritiquePJTranchant"> Tranchant </option>
+            <option value="SuccesCritiquePJPerforant"> Perforant </option>
+            <option value="SuccesCritiquePJContondant"> Contondant </option>
+            <option value="SuccesCritiquePJMagique"> Magique </option>
+          </select>
+      </div>
+      <div class="espace"></div>
+      <div class="form">
+      <label for="D10"> D10 : </label>
+      <input type="number" required id="D10" class="champsEffet">
+      <label for="D6"> D6 : </label>
+      <input type="number" required id="D6" class="champsEffet">
+      <input type="submit" value="Effet" class="SuccesPJSubmit">
+      </div>
+
+  </div>
+  
+  <div class="resultats">
+    <p class="ResultatChance"></p>
+  </div>
+
 
     <h2>Chances et malchances</h2>
     <div>
@@ -110,51 +168,806 @@ label {font-weight:bold}
 <script>
     
 // let randomNumber = Math.floor(Math.random() * 100) + 1; // commentaire
-let tablecritique = document.getElementById("ChoixTableCritique").value; // tablecritique prend la valeur du menu déroulant du select
-let tablechance = document.getElementById("ChoixTableChance").value; // tablechance prend la valeur du menu déroulant du select
-let ResultatEffetCritique = document.querySelector('.ResultatEffetCritique'); // ResultatEffetCritique sert à remplir le <p> correspondant
-let ResultatChance = document.querySelector('.ResultatChance'); // ResultatEffetCritique sert à remplir le <p> correspondant
+let TableEchec = document.getElementById("ChoixTableEchec").value; //  prend la valeur du menu déroulant du select
+let TableSuccesMJ = document.getElementById("ChoixTableSuccesMJ").value; //  prend la valeur du menu déroulant du select
+let TableSuccesPJ = document.getElementById("ChoixTableSuccesPJ").value; //  prend la valeur du menu déroulant du select
+let tablechance = document.getElementById("ChoixTableChance").value; //  prend la valeur du menu déroulant du select
+
+let ResultatEchecCritique = document.querySelector('.ResultatEchecCritique'); //  sert à remplir le <p> correspondant
+let ResultatSuccesCritiqueMJ = document.querySelector('.ResultatSuccesMJ'); //  sert à remplir le <p> correspondant
+let ResultatSuccesCritiquePJ = document.querySelector('.ResultatSuccesPJ'); //  sert à remplir le <p> correspondant
+let ResultatChance = document.querySelector('.ResultatChance'); //  sert à remplir le <p> correspondant
+
 let selection = document.querySelector('.ChoixTable'); // selection sert à cibler le menu déroulant
-let EffetCritiqueSubmit = document.querySelector('.EffetCritiqueSubmit'); // EffetCritiqueSubmit sert à cibler le bouton dans le form
+
+let EchecSubmit = document.querySelector('.EchecSubmit'); // sert à cibler le bouton dans le form
+let SuccesMJSubmit = document.querySelector('.SuccesMJSubmit'); //  sert à cibler le bouton dans le form
+let SuccesPJSubmit = document.querySelector('.SuccesPJSubmit'); //  sert à cibler le bouton dans le form
+
 let ChanceSubmit = document.querySelector('.ChanceSubmit'); // ChanceSubmit sert à cibler le bouton dans le form
 
-function EchecsCritiquesCac() {
+
+const D10 = Number(document.getElementById('D10').value);
+const D6 = Number(document.getElementById('D6').value);
+let indice = (D10 - 1) * 6 + D6 - 1;
+
+
+
+function EchecCritiqueCac() {
+  let EchecCritiqueCacContent = document.querySelector('.EchecCritiqueCacId'); // ResultatEffetCritique sert à remplir le <p> correspondant
+
+  const ListeEchecCritiqueCac = [
+  "Qui a éteint les lumières ? Si vous portez un couvre-chef, celui-ci se glisse sur vos yeux. Vous êtes aveuglé et devez utiliser une action bonus pour le repositionner.",
+  "Aider un allié. La cible de votre attaque peut utiliser sa réaction pour effectuer l'action Aide.",
+  "Deux pieds gauches. La cible de votre attaque peut utiliser sa réaction pour effectuer l'action de désengagement.",
+  "Ouverture. La cible de votre attaque gagne un bonus de 1d4 à son prochain jet d'attaque.",
+  "Où sont-ils allés ? La cible de votre attaque peut utiliser sa réaction pour effectuer l'action Se cacher.",
+  "Détermination farouche. Vous avez l'avantage sur votre prochaine attaque contre la cible.",
+  "La pièce tourne-t-elle ? Pour les 1d4 prochains tours, effectuez un jet de sauvegarde de Constitution DD 12 au début de votre tour. En cas d'échec, vous êtes aveuglé pour ce tour.",
+  "Au rebond. Votre arme rebondit sur la cible et vous frappe au visage. Vous avez un désavantage sur votre prochaine attaque.",
+  "Déplacez-vous largement. La cible peut vous attaquer par opportunité.",
+  "Muscle étiré. Vous infligez 1/2 point de dégâts lors de votre prochaine attaque.",
+  "Crampe ! Vous subissez une pénalité de 1d4 à votre prochain jet d'attaque.",
+  "Riiiip. Votre sac se déchire, vidant son contenu sur le sol.",
+  "À couper le souffle. Vous ne pouvez pas parler pendant 1d4 tours.",
+  "Les chaussures sont dénouées. A chaque fois que vous bougez, jusqu'à la fin du combat, vous avez 50% de chances de perdre votre chaussure.",
+  "Déchirer une couture. Un vêtement ou une pièce d'armure que vous portez (selon le MJ) est endommagé. À chaque jet d'attaque suivant, il y a 25 % de chances que l'objet se déchire davantage.",
+  "Élongation musculaire. Vous infligez 1/2 point de dégâts sur vos deux prochaines attaques.",
+  "Crampe ! Vous subissez une pénalité de 1d4 sur vos deux prochaines attaques.",
+  "Déséquilibré. Tous les ennemis qui vous attaquent avant votre prochain tour ajoutent 1d6 à leur jet d'attaque.",
+  "Garantie annulée. Les dégâts de votre arme sont réduits de 1/4.",
+  "Je t'ai épuisé. Ta prochaine attaque inflige le minimum de dégâts.",
+  "Esquive. Échangez vos places avec la cible et effectuez un jet de sauvegarde de Dextérité DD 12. En cas d'échec, tombez à terre.",
+  "Cheville tordue. Votre vitesse est réduite de 1,5 m jusqu'à ce que vous ayez terminé une courte pause.",
+  "Non préparé. Vous ne pouvez pas effectuer d'attaques d'opportunité contre la cible avant la fin de votre prochain tour.",
+  "Deux pieds gauches. Vous ne pouvez pas effectuer l'action Désengagement avant la fin de votre prochain tour.",
+  "Confusion momentanée. Vous n'ajoutez pas votre bonus de maîtrise à votre prochain jet d'attaque.",
+  "Faible. Vous n'ajoutez pas votre bonus de dégâts à votre prochaine attaque.",
+  "Trébuchement. Vous vous éloignez de 1,50 m de la cible.",
+  "Coup de poignet. Vous ne pouvez attaquer qu'avec une seule main lors de votre prochain tour.",
+  "Bouclier à double tranchant. Si vous tenez un bouclier, effectuez un jet de sauvegarde de Force DD 14. En cas d'échec, vous subissez 1d4 points de dégâts et vous êtes incapable de parler correctement pendant 1d4 rounds. Les sorts avec une composante verbale ont 50 % de chances d'échouer.",
+  "Épée dans la pierre. Votre arme reste coincée dans un objet proche et vous devez consacrer votre prochaine action à la libérer.",
+  "Confiance brisée. Vous avez un désavantage sur les jets d'attaque jusqu'à ce que vous puissiez réussir à toucher.",
+  "Confusion momentanée : Vous ne rajoutez pas votre bonus de compétence à vos attaques pendant 1d4 tours.",
+  "Rebond : Votre arme rebondit sur la cible et vous frappe au visage. Vous subissez la moitié des dégâts de l'arme et vous avez un désavantage à votre prochaine attaque.",
+  "Trop de fioritures : Vous faites tomber votre arme et devez réussir un jet de sauvegarde de Dextérité (DC 14). En cas d'échec, vous subissez les dégâts normaux de l'arme.",
+  "Epuisé : Vos deux prochaines attaques infligent des dégâts minimaux.",
+  "Mon dos ! : Si cette attaque a été faite avec une arme à deux mains, vous vous blessez le dos et avez un désavantage aux tests de Force (Athlétisme) jusqu'à ce que vous finissiez un repos court.",
+  "Garantie annulée : Les dégâts de votre arme sont réduits de moitié.",
+  "Esquive de côté : Vous échangez de place avec la cible et devez réussir un jet de sauvegarde de Dextérité (DC 14). En cas d'échec, vous tombez à terre.",
+  "Cheville tordue : Votre vitesse est réduite de 10 ft jusqu'à la fin d'un repos court.",
+  "Muscle tiré : Vous subissez un malus de 1d6 à votre prochain jet d'attaque.",
+  "Crampes : Vous infligez la moitié des dégâts pendant 1d4 + 1 tours.",
+  "Je vais récupérer ça... : Vous laissez tomber votre arme et devez utiliser une action bonus pour la ramasser.",
+  "Mains glissantes : Vous perdez votre prise en plein swing, et votre arme vole à une distance de 1d4 + 1 × 5 ft dans la direction de la cible.",
+  "Mais qu'est-ce que vous portez ?! : Votre coup manque sa cible et votre bras ou votre main frappe la cible à la place de votre arme. Si la cible porte une armure lourde, vous subissez 1d6 dégâts contondants.",
+  "Mon arme est coincée : Votre arme se coince dans une partie non vitale de l'ennemi ou dans un objet proche.",
+  "Bouclier à double tranchant : Si vous tenez un bouclier, faites un jet de sauvegarde de Force (DC 16). En cas d'échec, vous subissez 1d6 dégâts et vous ne pouvez pas parler correctement pendant 1d4 tours. Les sorts avec une composante verbale ont 75 % de chances d'échouer.",
+  "Rebond : Votre arme rebondit sur la cible et vous frappe au visage. Vous subissez les dégâts de l'arme et vous avez un désavantage sur votre prochaine attaque.",
+  "Oups, désolé ! : Relancez cette attaque contre un allié situé à 5 ft. de vous et de la cible d'origine.",
+  "Mains glissantes : Vous perdez votre prise en plein swing et votre arme vole à une distance de 1d4 + 1 × 5 ft en direction de la cible. Faites un jet d'attaque à distance contre la créature la plus proche (autre que la cible) dans cette direction.",
+  "Cheville tordue : Votre vitesse est réduite de 4,5 mètres (15 ft.) jusqu'à ce que vous terminiez un repos court.",
+  "Esquive : Vous échangez votre position avec celle de la cible et faites un jet de sauvegarde de Dextérité DD 16. En cas d'échec, vous tombez à terre.",
+  "Yoink ! : Faites un test de Dextérité ou de Force opposé avec la cible. Si la cible gagne, elle vous prend votre arme.",
+  "Craquement : Votre arme se casse.",
+  "Désarmer : La cible de votre attaque peut utiliser sa réaction pour tenter de vous désarmer.",
+  "Lance brisée : L'arme avec laquelle vous avez attaqué est détruite.",
+  "Quelle riposte... : Faites un jet de sauvegarde de Force ou de Dextérité DD 18. En cas d'échec, subissez les dégâts normaux de l'arme, et la cible de cette attaque peut faire une attaque d'opportunité contre vous avec avantage.",
+  "Mon erreur ! : Relancez cette attaque avec avantage contre un allié situé à moins de 1,5 mètre (5 ft.) de vous et de la cible d'origine.",
+  "Jeu de jambes : Votre coup sauvage fait que votre arme vous frappe au pied, infligeant les dégâts maximaux. Si l'arme inflige des dégâts contondants, votre vitesse est réduite de 3 mètres (10 ft.).",
+  "Un petit pas... : Jusqu'à 1d4 + 1 ennemis à moins de 1,5 mètre (5 ft.) de vous peuvent faire une attaque d'opportunité contre vous. Tous ceux qui touchent peuvent faire une attaque d'opportunité supplémentaire.",
+  "Posture défensive : La cible de votre attaque peut utiliser sa réaction pour faire une attaque au corps à corps contre vous, puis prendre l'action de désengagement."
+];
+EchecCritiqueCacTexte.textContent = ListeEchecCritiqueCac[indice]; // remplit le <p> correspondant 
+
+}
+
+function EchecCritiqueDist() {
+
+  const ListeEchecCritiqueDist = [
+    "Oups ! Relancez l'attaque contre la créature la plus proche de la cible (autre que vous-même).",
+    "Volée. Si la cible de votre attaque possède une arme à distance, elle peut utiliser sa réaction pour effectuer une attaque à distance contre vous.",
+    "Je recharge ! Vous perdez vos munitions et devez consacrer votre prochaine action à recharger.",
+    "Hors d'esquive. La cible de votre attaque peut utiliser sa réaction pour effectuer l'action Se cacher.",
+    "Arc cassé. L'arme avec laquelle vous avez attaqué est détruite.",
+    "Avez-vous vérifié les coussins du canapé ? Ce projectile ne peut pas être récupéré.",
+    "Détermination farouche. Vous avez l'avantage sur votre prochaine attaque contre la cible.",
+    "Je suppose que c'est à moi maintenant... Le projectile atterrit à un endroit pratique pour que la cible puisse le récupérer.",
+    "Pas si furtif. Si vous vous cachez, la cible vous voit.",
+    "Quelque chose dans mon œil. Relancez cette attaque contre une créature aléatoire à 3 mètres ou moins de la cible.",
+    "Hors cible. Vous infligez 1/2 point de dégâts lors de votre prochaine attaque.",
+    "Crampe ! Vous subissez une pénalité de 1d4 à votre prochain jet d'attaque.",
+    "Déchirer une couture. Un vêtement ou une pièce d'armure que vous portez (selon le MJ) est endommagé. À chaque jet d'attaque suivant, il y a 25 % de chances que l'objet se déchire davantage.",
+    "Déversement. Votre conteneur de munitions est renversé et son contenu tombe au sol.",
+    "Là où la flèche tombe... Le projectile est lancé droit vers le haut. Si vous ne bougez pas avant votre prochain tour, vous devez effectuer un jet de sauvegarde de Dextérité DD 12. En cas d'échec, vous subissez les dégâts de l'arme.",
+    "Mauvais jeu de jambes. Vous ne pouvez pas effectuer l'action Désengagement lors de votre prochain tour.",
+    "Hors cible. Vous infligez 1/2 point de dégâts sur vos deux prochaines attaques.",
+    "Crampe ! Vous subissez une pénalité de 1d4 sur vos deux prochaines attaques.",
+    "Hésitation. Vous perdez votre action bonus lors de votre prochain tour.",
+    "Twang ! Si cette attaque a été effectuée avec un arc ou une arbalète, lancez un d10. Sur un résultat de 1 à 9, les dégâts de l'arme sont réduits de 1d4 jusqu'à ce qu'elle soit réparée. Sur un résultat de 10, la corde se casse.",
+    "Coincé. Un vêtement ample est cloué au sol par votre projectile. Vous ne pouvez pas bouger tant que vous n'avez pas effectué une action bonus pour vous libérer.",
+    "Mauvais joueur. La cible vous provoque. Effectuez un jet de sauvegarde de Sagesse DD 12. En cas d'échec, vous subissez un désavantage lorsque vous attaquez cette cible jusqu'à ce que vous la touchiez avec succès.",
+    "Crampe ! Vous subissez une pénalité de 1d4 à votre prochain jet d'attaque.",
+    "Votre posture est décalée. Effectuez un jet de sauvegarde de Sagesse DD 12. En cas d'échec, vous subissez une pénalité de 1d6 à votre prochain jet d'attaque à distance.",
+    "Tir dépassé. Ce projectile parcourt jusqu'à deux fois sa portée habituelle.",
+    "Confusion momentanée. Vous n'ajoutez pas votre bonus de maîtrise à votre prochain jet d'attaque.",
+    "Faible. Vous n'ajoutez pas votre bonus de dégâts à votre prochaine attaque.",
+    "Créateur de bruit. Cette attaque alerte la cible de votre présence.",
+    "Tir excessif. Si cette attaque a été effectuée avec un arc, vous subissez 1d4 points de dégâts et effectuez un jet de sauvegarde de Dextérité DD 14. En cas d'échec, vous perdez une partie de votre oreille.",
+    "Verrouillage de la cible. La cible de votre attaque obtient un bonus de 1d4 à son prochain jet d'attaque.",
+    "Ricochet. Effectuez un jet de sauvegarde de Dextérité DD 14. En cas d'échec, vous subissez la moitié des dégâts de l'arme et vous êtes aveuglé pendant 1d4 rounds.",
+    "Poussière dans les yeux. La portée de votre arme est réduite de moitié pendant 1d4 tours.",
+    "Confusion momentanée. Vous ne rajoutez pas votre bonus de compétence à vos attaques pendant 1d4 tours.",
+    "Sorti de l'ombre. Si vous étiez caché, la cible vous voit. Relancez votre test de Dextérité (Discrétion) avec un désavantage contre la Perception passive de tous les ennemis dans un rayon de 120 ft.",
+    "Contre-sens ! Si cette attaque a été faite avec une arme de jet, elle voyage dans la direction opposée à celle prévue. Relancez cette attaque avec un désavantage contre le premier objet touché.",
+    "Epuisé. Votre prochaine attaque inflige des dégâts minimaux.",
+    "Twang ! Si cette attaque a été faite avec un arc ou une arbalète, lancez un d8. Sur un résultat de 1 à 7, les dégâts de l’arme sont réduits de 1d4 jusqu’à réparation. Sur un 8, la corde casse.",
+    "Votre posture est mauvaise. Faites un jet de sauvegarde de Sagesse (DC 14). En cas d'échec, vous subissez un malus de 1d6 à votre prochain jet d'attaque à distance.",
+    "Crampes ! Vous subissez un malus de 1d6 à votre prochain jet d'attaque.",
+    "Hors cible. Vous infligez la moitié des dégâts pendant 1d4 + 1 tours.",
+    "Mauvais perdant. La cible vous provoque. Faites un jet de sauvegarde de Sagesse (DC 14). En cas d'échec, vous avez un désavantage en attaquant cette cible jusqu'à ce que vous réussissiez à la toucher.",
+    "Peut-être déplacer votre doigt la prochaine fois... Si cette attaque a été faite avec un arc, vous subissez les dégâts normaux de l'arme.",
+    "Entorse du poignet. Si cette attaque a été faite avec une arme de jet, vous subissez 1d6 dégâts.",
+    "Bruit gênant. Cette attaque rate et alerte la cible de votre présence et de votre emplacement général.",
+    "Mauvaise forme. Si cette attaque a été effectuée avec un arc, la corde de l'arc frappe votre avant-bras. Subissez un malus de 1d6 à vos deux prochains jets d'attaque.",
+    "Ricochet. Faites un jet de sauvegarde de Dextérité (DC 16). En cas d'échec, vous subissez les dégâts de l'arme et êtes aveuglé pendant 1d4 tours.",
+    "Confiance brisée. Vous avez un désavantage sur les jets d'attaque jusqu'à ce que vous réussissiez à toucher une cible.",
+    "Pas si furtif. Si vous étiez caché, la cible vous voit. Relancez votre test de Dextérité (Discrétion) avec désavantage. Chaque ennemi dans un rayon de 120 ft. peut effectuer un test de Sagesse (Perception) avec avantage pour vous détecter.",
+    "Twang ! Si cette attaque a été effectuée avec un arc ou une arbalète, lancez un d6. Sur un 1-5, les dégâts de l'arme sont réduits de 1d4 jusqu'à ce qu'elle soit réparée. Sur un 6, la corde casse.",
+    "Mon erreur ! Relancez cette attaque contre un allié situé à moins de 3 mètres (10 ft.) de la cible d'origine.",
+    "Posture défaillante. Faites un jet de sauvegarde de Sagesse DD 16. En cas d'échec, subissez un malus de 1d6 à votre prochain jet d'attaque à distance.",
+    "Entorse du poignet. Si cette attaque a été faite avec une arme de jet, subissez 1d6 dégâts et faites un jet de sauvegarde de Constitution DD 16 à chaque fois que vous utilisez une arme de jet jusqu'à ce que vous terminiez un repos court. En cas d'échec, subissez 1d6 dégâts.",
+    "Mauvaise forme. Si cette attaque a été faite avec un arc, la corde de l'arc vous frappe l'avant-bras. Vous subissez un malus de 1d8 sur vos deux prochaines attaques.",
+    "Déséquilibré. La force de votre attaque à distance vous déséquilibre, et vous tombez à terre.",
+    "Tir de sommation. La cible de votre attaque peut utiliser sa réaction pour se déplacer jusqu'à la moitié de sa vitesse et se mettre à couvert.",
+    "Ricochet. Faites un jet de sauvegarde de Dextérité DD 18. En cas d'échec, subissez le double des dégâts de l'arme et vous êtes aveuglé pendant 1d4 tours.",
+    "Ils ne l'ont jamais vu venir. S'il y a un allié à moins de 3 mètres (10 ft.) de la cible, il doit faire un jet de sauvegarde de Dextérité DD 18. En cas d'échec, il est touché par cette attaque. Si son dos était tourné, cela est considéré comme un coup critique.",
+    "Un aventurier comme toi... S'il y a un allié à moins de 3 mètres (10 ft.) de la cible, il doit faire un jet de sauvegarde de Dextérité DD 18. En cas d'échec, il est touché au genou par cette attaque et sa vitesse est réduite de 3 mètres (10 ft.) pendant 1d4 tours.",
+    "Twang ! Si cette attaque a été faite avec un arc ou une arbalète, la corde se casse.",
+    "Réflexes rapides. Si vous utilisez une arme de jet non munie de munitions, la cible peut utiliser sa réaction pour tenter un test de Dextérité DD 10 et attraper votre arme en cas de succès."
+];
+
+EchecCritiqueDistTexte.textContent = ListeEchecCritiqueDist[indice]; // remplit le <p> correspondant 
                         }
 
-function EchecsCritiquesDistance() {
+function EchecCritiqueMains() {
+
+  const ListeEchecCritiqueMains = [
+  "Quel sale goût ! Si cette attaque était une morsure, vous êtes empoisonné pendant 1d4 rounds.",
+  "Entorse. Votre corps subit des dégâts lorsque votre coup tourne mal. L'arme subit une pénalité cumulative de -1 aux jets de dégâts jusqu'à ce que vous ayez terminé un repos court. Si sa pénalité tombe à -5, elle nécessite un repos long à la place.",
+  "Verrouillé. La cible de votre attaque peut utiliser sa réaction pour tenter de vous agripper.",
+  "Poids redistribué. La cible de votre attaque peut utiliser sa réaction pour tenter de vous bousculer.",
+  "Restez bouche bée. La cible de votre attaque gagne un bonus de 1d4 à son prochain jet d'attaque.",
+  "Aïe, aïe, aïe ! Effectuez un jet de sauvegarde de Constitution DD 12. En cas d'échec, vous ne pouvez pas attaquer avec cette partie du corps pendant 1d4 rounds.",
+  "Dent branlante. Si cette attaque était une morsure, vos dégâts sont réduits de 1d4 pendant 1 minute.",
+  "Détermination farouche. Vous avez l'avantage sur votre prochaine attaque contre la cible.",
+  "Marchez dessus ! Si vous avez une queue, subissez 1d4 dégâts.",
+  "Hors forme. Vous avez un désavantage sur les attaques de mêlée pendant 1d4 rounds.",
+  "Quelque chose s'est glissé. Votre CA est réduite de 1d4 pendant 1d4 rounds.",
+  "Tendre. Vous infligez 1/2 point de dégâts lors de votre prochaine attaque.",
+  "Crampe ! Vous subissez une pénalité de 1d4 à votre prochain jet d'attaque.",
+  "Aïe, aïe, aïe ! Effectuez un jet de sauvegarde de Constitution DD 12. En cas d'échec, vous ne pouvez pas attaquer avec cette partie du corps pendant 1 minute.",
+  "Je t'ai épuisé. Ta prochaine attaque inflige un minimum de dégâts.",
+  "Dans ma manche. Vous vous retrouvez empêtré dans les vêtements ou l'armure de la cible et devez réussir un jet de sauvegarde de Dextérité ou de Force DD 12 pour vous libérer. Tant que vous êtes empêtré, les attaques contre vous sont effectuées avec avantage.",
+  "Attaquez pour les barrières. Si cette attaque a été effectuée avec une queue, vous ratez la cible et frappez le sol ou un mur. Vous subissez la moitié des dégâts de l'attaque.",
+  "Tendre. Vous infligez 1/2 points de dégâts sur vos deux prochaines attaques.",
+  "Crampe ! Vous subissez une pénalité de 1d4 sur vos deux prochaines attaques.",
+  "Déconcerté. Vous ne pouvez pas prendre de réactions avant le début de votre prochain tour.",
+  "Ce petit cochon... Si cette attaque était un coup de pied ou une griffe, votre vitesse est réduite de 1,50 m pendant 1d4 rounds.",
+  "Esquive. Échangez vos places avec la cible et effectuez un jet de sauvegarde de Dextérité DD 12. En cas d'échec, tombez à terre.",
+  "Sortez de votre état normal ! Si vous êtes transformé de votre plein gré (par exemple un druide sous forme sauvage), vous revenez à votre forme originelle.",
+  "Vous vous cognez l'orteil. Vous ne pouvez pas effectuer d'attaque à mains nues lors de votre prochain tour.",
+  "Aïe, aïe, aïe ! Effectuez un jet de sauvegarde de Constitution DD 12. En cas d'échec, vous ne pouvez pas attaquer avec cette partie du corps lors de votre prochain tour.",
+  "Attaque au vif. Si cette attaque a été effectuée avec une griffe, vos dégâts sont réduits de 1d4 pendant 1 minute.",
+  "Confusion momentanée. Vous n'ajoutez pas votre bonus de maîtrise à votre prochain jet d'attaque.",
+  "Récupération retardée. Vous n'ajoutez pas votre bonus de dégâts à votre prochaine attaque.",
+  "Le chat a mordu ta langue ? Si cette attaque était une morsure, tu subis les dégâts normaux de l'attaque.",
+  "Gravement blessé. L'arme naturelle avec laquelle vous avez attaqué ne peut plus être utilisée tant que vous n'avez pas terminé un long repos.",
+  "Aïe, aïe, aïe ! Effectuez un jet de sauvegarde de Constitution DD 14. En cas d'échec, vous ne pouvez pas attaquer avec cette partie du corps pendant 1 minute.",
+  "Dent déchaussée : Si cette attaque était une morsure, vos dégâts sont réduits de 2d4 pendant 1 minute.",
+  "Dans la manche... : Vous vous emmêlez dans les vêtements ou l'armure de la cible et devez réussir un jet de sauvegarde de Dextérité ou de Force (DC 14) pour vous libérer. Tant que vous êtes emmêlé, les attaques contre vous ont l'avantage.",
+  "Confusion momentanée : Vous ne rajoutez pas votre bonus de compétence à vos attaques pendant 1d4 tours.",
+  "Mauvaise forme : Vous avez un désavantage sur vos attaques de mêlée pendant 1d6 tours.",
+  "Quelque chose a glissé : Votre CA est réduite de 1d6 pendant 1d4 tours.",
+  "Epuisé : Vos deux prochaines attaques infligent des dégâts minimaux.",
+  "Tendre : Vous subissez un malus de 1d6 à votre prochain jet d'attaque.",
+  "Tendre : Vous infligez la moitié des dégâts pendant 1d4 + 1 tours.",
+  "Viser les murs : Si cette attaque a été faite avec une queue, vous ratez la cible et frappez le sol ou un mur. Vous subissez les dégâts de l'attaque.",
+  "Posture à revoir : Si cette attaque a été faite avec un membre, faites un jet de sauvegarde de Dextérité (DC 14). En cas d'échec, vous tombez à terre.",
+  "Ongle cassé... : Si cette attaque a été faite avec une griffe, vous ne pouvez plus l'utiliser pendant 1d4 tours (si vous avez plusieurs griffes, cela n'affecte qu'une seule).",
+  "Coupure profonde : Si cette attaque a été faite avec une griffe, vos dégâts sont réduits de 2d4 pendant 1 minute.",
+  "Confusion momentanée : Vous n'ajoutez pas votre bonus de maîtrise à vos attaques pendant 1d4 + 1 tours.",
+  "Récupération retardée : Vous n'ajoutez pas votre bonus de dégâts à vos attaques pendant 1d4 + 1 tours.",
+  "Aïe, aïe, aïe ! : Faites un jet de sauvegarde de Constitution (DC 16). En cas d'échec, vous ne pouvez plus attaquer avec cette partie de votre corps jusqu'à la fin d'un repos court.",
+  "Le chat vous a coupé la langue ? : Vous subissez les dégâts normaux de l'attaque. Si cette attaque était une morsure, vous ne pouvez plus parler jusqu'à ce que vous soyez soigné.",
+  "L’épée bat le poing : Si la cible de cette attaque brandit une arme de mêlée, vous subissez la moitié des dégâts de cette arme.",
+  "Mauvaise forme : Vous avez un désavantage sur les attaques de mêlée pendant 1d8 tours.",
+  "Quelque chose a glissé : Votre CA est réduite de 1d8 pour 1d4 tours.",
+  "Sac de briques : Vous tombez à terre. 1d4 ennemis à moins de 1,5 mètre (5 ft.) de vous peuvent faire une attaque d'opportunité.",
+  "Mon erreur ! : Relancez cette attaque contre un allié à moins de 1,5 mètre (5 ft.) de vous et de la cible d'origine.",
+  "Récupération effrayante : La cible peut faire une attaque d'opportunité contre vous. Si l'attaque réussit, faites un jet de sauvegarde de Sagesse DD 16. En cas d'échec, vous êtes effrayé jusqu'à la fin de votre prochain tour.",
+  "Coup à la tête : Vous vous cognez violemment la tête et êtes sonné jusqu'au début de votre prochain tour.",
+  "Clac et blocage : Quelque chose se déboîte. Vous devez passer votre prochaine action à la remettre en place.",
+  "L'épée bat le poing : Si la cible de cette attaque manie une arme de corps à corps, subissez les dégâts de cette arme.",
+  "Voilà ce que ça fait : Faites un jet de sauvegarde de Constitution DD 18. En cas d'échec, subissez les dégâts normaux de cette attaque.",
+  "Exposé : Toutes les créatures à moins de 1,5 mètre (5 ft.) de vous peuvent faire une attaque d'opportunité contre vous.",
+  "Aïe, aïe, aïe ! : Faites un jet de sauvegarde de Constitution DD 18. En cas d'échec, vous ne pouvez plus attaquer avec cette partie du corps jusqu'à la fin d'un repos long.",
+  "Puiser dans le ki : La cible de votre attaque peut canaliser son énergie intérieure pour récupérer un nombre de points de vie égal au carré de son facteur de danger (minimum 1)."
+];
+
+EchecCritiqueMainsTexte.textContent = ListeEchecCritiqueMains[indice]; // remplit le <p> correspondant 
                         }
 
-function EchecsCritiquesNaturel() {
-                        }
+function EchecCritiqueMagique() {
+  const ListeEchecCritiqueMagique = [
+    "Contrecoup. Les effets du sort sont inversés ; tous les effets néfastes vous sont appliqués (et la cible remplace « vous » dans la description du sort, le cas échéant) à la moitié de leur puissance. Si un effet bénéfique est destiné à vous ou à un allié, une cible aléatoire à portée est affectée.",
+    "Abritez-vous. La cible de votre attaque peut utiliser sa réaction pour se déplacer jusqu'à la moitié de sa vitesse et se mettre à couvert.",
+    "Maintenant vous me voyez… La cible de votre sort devient invisible pendant 1d4 rounds.",
+    "Des cendres aux cendres. Le focus de lancement de sorts que vous avez utilisé est détruit.",
+    "Doigts de beurre. Vous perdez votre concentration sur les sorts et devez consacrer votre prochaine action à la retrouver.",
+    "Cot cot codeeeek. 2d4 poulets apparaissent à 3 mètres de vous.",
+    "Ce n’est pas celui que j’ai choisi ! Ton nez grandit jusqu’à trois fois sa taille d’origine.",
+    "Vous n'avez plus de solution... Vous ne pouvez pas lancer ce sort pendant 1d4 rounds.",
+    "C'est parti ! Vous vous téléportez à 3 mètres dans une direction déterminée aléatoirement par le MJ (vers le haut est une direction).",
+    "Je fond ! Si cette attaque inflige des dégâts d'acide, un objet non magique de votre sac se dissout.",
+    "Enlevez-moi cette chose ! Si cette attaque inflige des dégâts de froid, vous avez terriblement chaud pendant 1d4 heures. Vous ne bénéficiez pas des avantages liés à la maîtrise de votre armure pendant cette période.",
+    "Celui qui l'a senti... Si cette attaque inflige des dégâts de feu, une odeur nauséabonde de soufre vous enveloppe pendant 1d4 jours.",
+    "Je ne connais pas ma propre force... Si cette attaque inflige des dégâts de force, pendant 1d4 jours, il y a 10 % de chances que, lorsque vous allez toucher ou tenir quelque chose, vous étendiez votre main à pleine force à la place.",
+    "Choc. Si cette attaque inflige des dégâts de foudre, vous subissez un choc désagréable lorsque vous touchez des objets métalliques pendant 1d4 jours.",
+    "Le membre préféré de tout le monde. Si cette attaque inflige des dégâts nécrotiques, le dernier ennemi que vous avez tué se transforme en zombie. Il est incapable d'agir d'une quelconque manière, mais vous suit sans réfléchir pendant 1d4 jours, après quoi il s'effondre à nouveau sous forme de cadavre.",
+    "Gâté. Si cette attaque inflige des dégâts de poison, la nourriture consommée par les autres personnes à moins de 6 mètres de vous sera vomie 2d10 minutes plus tard pendant 1d4 jours.",
+    "Terreurs nocturnes. Si cette attaque inflige des dégâts psychiques, vous devez réussir un jet de sauvegarde de Sagesse DD 12 lorsque vous terminez les 1d4 prochains repos longs. En cas d'échec, vous êtes en proie à des cauchemars et ne bénéficiez pas des avantages du repos.",
+    "Chéri, tu es radieux. Si cette attaque inflige des dégâts radiants, tu émets une lumière vive pendant 1d4 heures.",
+    "BRUITS FORTS. Si cette attaque inflige des dégâts de foudre, votre voix est amplifiée jusqu'à trois fois son volume normal pendant 1d4 heures.",
+    "Oh mon Dieu ! Une créature FP 1/4, choisie au hasard par le MJ, apparaît à moins de 9 mètres de vous. Elle n'est hostile qu'à votre égard.",
+    "C'est ma faute ! Relancez l'attaque contre un allié à 3 mètres ou moins de la cible. Si l'attaque touche, elle inflige 1/2 point de dégâts.",
+    "Sautez dessus. Vous ne pouvez ni marcher ni courir pendant 1d4 minutes. Vous ne pouvez que sauter.",
+    "En haut, en haut et en avant ! Vous commencez à flotter vers le haut à une vitesse de 3 mètres par tour. À chacun de vos tours, effectuez un jet de sauvegarde DD 12 en utilisant votre capacité de lancement de sorts pour mettre fin à cet effet et tomber de votre hauteur actuelle.",
+    "Oh mon Dieu ! Une créature de FP 1/2, choisie au hasard par le MJ, apparaît à moins de 9 mètres de vous. Elle est hostile envers tout le monde.",
+    "Mauvais sort de distraction. Vous ne parvenez pas à vous concentrer sur vos sorts pendant 1d4 rounds.",
+    "Puissance diminuée. Votre bonus d'attaque de sort et votre DD de sauvegarde de sort sont réduits de 1d4 pendant 1d4 rounds.",
+    "Je t'ai bien compris. La cible a un avantage sur les jets de sauvegarde contre tes sorts pendant 1d4 rounds.",
+    "Bizarre... Vous et la cible devez chacun réussir un jet de sauvegarde de Charisme DD 12. Si vous échouez tous les deux, vos esprits sont échangés pendant 1d4 rounds.",
+    "Contrecoup. Les effets du sort sont inversés ; tous les effets néfastes vous sont appliqués (et la cible remplace « vous » dans la description du sort, le cas échéant). Si un effet bénéfique est destiné à vous ou à un allié, une cible aléatoire à portée est affectée.",
+    "Anomalie arcanique. Vous ne pouvez pas lancer de sorts de la même école de magie que le sort que vous venez de lancer tant que vous n'avez pas terminé un repos court.",
+    "Nous avons tous nos démons. Effectuez un jet de sauvegarde DD 14 avec votre capacité de lancer de sorts. En cas d'échec, vous ne pouvez parler qu'abyssal jusqu'à la fin d'un repos long.",
+    "Adieu la subtilité... : Le sort produit un grand bruit audible à 300 ft à la ronde. Toutes les créatures dans un rayon de 15 ft autour de vous doivent réussir un jet de sauvegarde de Constitution (DC 12). En cas d'échec, elles sont rendues sourdes pour 1d4 tours.",
+    "Trou de mémoire... : Vous ne pouvez pas lancer ce sort pendant 1 minute.",
+    "Pas tout à fait ce que je voulais : La cible de votre sort devient résistante au type de dégâts du sort pendant 1d4 tours.",
+    "Oh mon dieu ! : Une créature de CR 1/2, choisie aléatoirement par le MJ, apparaît à 30 ft de vous. Elle est hostile uniquement envers vous.",
+    "Oups ! : Relancez l'attaque contre un allié à 10 ft de la cible.",
+    "D'où ça sort ? : Si cette attaque inflige des dégâts de froid, feu, force, foudre ou tonnerre, un élémentaire (choisi par le MJ) apparaît dans un rayon de 60 ft. Il est hostile envers toutes les créatures.",
+    "Trou de mémoire... : Faites un jet de sauvegarde avec votre capacité de lanceur de sorts (DC 14). En cas d'échec, vous ne pouvez plus lancer ce sort jusqu'à la fin d'un repos court.",
+    "Et c'est parti ! : Vous vous téléportez à 30 ft dans une direction déterminée aléatoirement par le MJ (monter est une direction).",
+    "Ils sont incontrôlables ! : Vous perdez le contrôle de vos jambes, qui courent dans une direction aléatoire à pleine vitesse pendant 1d4 tours.",
+    "Boom : Vous êtes projeté à une distance de 1d10 × 5 ft loin de la cible.",
+    "Oh mon dieu ! : Une créature de CR 1, choisie aléatoirement par le MJ, apparaît à 30 ft de vous. Elle est hostile envers tout le monde.",
+    "Détonation : Toutes les créatures dans un rayon de 10 ft autour de vous, y compris vous-même, doivent réussir un jet de sauvegarde (DC 16) correspondant au type de sort. Chaque créature qui échoue subit 1d8 dégâts du type provoqué par cette attaque.",
+    "Pris à votre propre piège : Vous devenez vulnérable au type de dégâts du sort que vous avez tenté de lancer jusqu'à ce que vous terminiez un repos court.",
+    "Tout le contraire : La cible de votre attaque est imprégnée du type de dégâts de ce sort pour les 1d4 prochains tours. À chaque attaque au corps à corps, elle inflige 1d4 de ce type de dégâts.",
+    "Retour de flamme : Les effets du sort sont inversés ; tout effet nocif vous est appliqué (et la cible remplace 'vous' dans la description du sort, le cas échéant) avec une double puissance. Si un effet bénéfique était destiné à vous ou à un allié, un ennemi aléatoire dans la portée en est affecté.",
+    "Maintenant tu me vois... : Vous êtes transporté dans le plan des rêves pendant 1d4 rounds.",
+    "Ce n'est pas ce que je voulais : Vous ne pouvez pas lancer de sorts pendant 1d4 rounds.",
+    "C'est pas bien... : Vous perdez 1d4 points de vie permanents.",
+    "Gâté... : Le dernier ennemi que vous avez tué revient à la vie en tant que zombie et vous suit sans réfléchir pendant 1d4 jours avant de mourir à nouveau.",
+];
 
-function EchecsCritiquesMagique() {
+EchecCritiqueMagiqueTexte.textContent = ListeEchecCritiqueMagique[indice]; // remplit le <p> correspondant 
                         }
 
 
 function SuccesCritiqueMJTranchant() {
+  const ListeSuccesCritiqueMJTranchant = [
+    "Cicatrices : Dégâts doublés, et vous recevez une cicatrice permanente sur le visage.",
+    "Infection grave : Vous devez réussir un jet de sauvegarde de Constitution DD 12, ou devenir empoisonné dans 1d4 heures.",
+    "Maladie sévère : Vous devez réussir un jet de sauvegarde de Constitution DD 12, ou contracter une maladie. Tant que vous êtes malade, votre maximum de points de vie est réduit de 1d10 chaque aube.",
+    "Saignement : Faites un jet de sauvegarde de Constitution DD 12. En cas d’échec, vous prenez 1d4 points de dégâts au début de chaque tour pendant 1d4 rounds.",
+    "Sang dans les yeux : Vous êtes aveuglé jusqu'à la fin de votre prochain tour.",
+    "Lèvre fendue : Faites un jet de sauvegarde de Constitution DD 12. En cas d’échec, vous ne pouvez plus parler correctement. Les sorts avec un composant verbal ont 25 % de chances d’échouer.",
+    "Saignement abondant : Dégâts doublés. Si les dégâts sont égaux ou supérieurs à 1/4 de vos points de vie maximum, faites un jet de sauvegarde de Sagesse DD 12. En cas d’échec, vous êtes effrayé par votre attaquant.",
+    "Saignement : Faites un jet de sauvegarde de Constitution DD 12. En cas d’échec, vous prenez 1d4 points de dégâts au début de chaque tour pendant 1d4 rounds.",
+    "Piège tendu : Un ennemi dans un rayon de 1,5 mètre peut faire une attaque d'opportunité contre vous.",
+    "Entaille brutale : L'attaquant relance les dés de dégâts affichant une valeur de 1 ou 2 pour cette attaque.",
+    "Attaque enragée : Dégâts doublés, et vous pouvez faire une attaque d'opportunité contre votre attaquant.",
+    "Armure déchirée : Faites un jet de sauvegarde de Dextérité DD 12. En cas d’échec, si vous portez une armure en cuir ou en tissu, son efficacité est réduite de 1.",
+    "Glissade : Votre CA est réduite de 1d4 pour 1d4 rounds.",
+    "Simple et efficace : Cette attaque inflige des dégâts maximum.",
+    "Entaille terrifiante : Dégâts doublés, et faites un jet de sauvegarde de Sagesse DD 12. En cas d’échec, vous êtes effrayé par votre attaquant.",
+    "Défenses ouvertes : La prochaine attaque contre vous bénéficie d'un avantage.",
+    "Coup sauvage : Toute créature dans un rayon de 1,5 mètre de vous et de votre attaquant subit la moitié des dégâts que vous avez subis.",
+    "Ça va faire mal : Vous êtes vulnérable aux dégâts tranchants pendant 1d4 rounds.",
+    "Saignement : Faites un jet de sauvegarde de Constitution DD 12. En cas d'échec, vous subissez 1d4 points de dégâts au début de chaque tour pendant 1d4 tours.",
+    "Tendon sectionné : Votre vitesse est réduite de moitié pendant 1d4 tours.",
+    "Balayage des jambes : Faites un jet de sauvegarde de Dextérité DD 12. En cas d'échec, vous êtes mis à terre.",
+    "Hors de forme : Vous avez un désavantage sur votre prochaine attaque au corps à corps.",
+    "Désarmé : Doublez les dégâts, puis faites un jet de sauvegarde de Dextérité DD 12. En cas d'échec, vous lâchez votre arme.",
+    "Entaille affaiblissante : Vous infligez des dégâts réduits de moitié lors de votre prochaine attaque au corps à corps.",
+    "Hors de forme : Vous avez un désavantage sur votre prochaine attaque au corps à corps.",
+    "Suivi : Votre attaquant peut faire une attaque supplémentaire contre vous.",
+    "Vous vous en sortez bien : Triplez les dégâts... bonne chance pour ne pas mourir !",
+    "Perte de sang : Vos attaques infligent 1d4 dégâts en moins jusqu'à ce que vous receviez des soins magiques.",
+    "Muet : Vous recevez une blessure à la gorge qui vous empêche de parler. Les sorts avec composante verbale échouent automatiquement.",
+    "Saignement : Faites un jet de sauvegarde de Constitution DD 14. En cas d'échec, subissez 1d6 points de dégâts au début de chaque tour pendant 1d6 tours.",
+    "Pas eux ! Faites un jet de sauvegarde de Sagesse DD 14. En cas d'échec, vous devenez effrayé des créatures du type de votre attaquant. Répétez ce jet chaque fois que vous affrontez des créatures de ce type jusqu'à en avoir vaincu 2d12.",
+    "Cicatrice déchiquetée : Vous recevez une cicatrice permanente sur le visage et gagnez la compétence en Charisme (Intimidation), mais perdez la compétence en Charisme (Persuasion), si vous l'aviez.",
+    "Faites-les payer : Triplez les dégâts et vous avez l'avantage sur votre prochaine attaque contre l'attaquant.",
+    "Armure déchirée : Faites un jet de sauvegarde de Dextérité DD 14. En cas d'échec, si vous portez une armure en cuir, son efficacité est réduite de 2.",
+    "Quelque chose a glissé : Votre CA est réduite de 1d6 pour 1d6 tours.",
+    "Coup sauvage : Toute créature à 1,5 mètre de vous et de votre attaquant subit les mêmes dégâts que vous avez pris.",
+    "Chevilles tranchées : Triplez les dégâts, et vous êtes renversé. Faites un jet de sauvegarde de Constitution DD 14 lorsque vous tentez de vous relever. En cas d'échec, vous êtes incapable de le faire.",
+    "Hors de forme : Vous avez un désavantage sur les attaques de mêlée pendant 1d6 tours.",
+    "Balayez les jambes : Faites un jet de sauvegarde de Dextérité DD 14. En cas d'échec, vous êtes renversé.",
+    "Tendon tranché : Votre vitesse est réduite de moitié pendant 1d6 tours.",
+    "Désarmer : Triplez les dégâts et faites un jet de sauvegarde de Dextérité DD 14. En cas d'échec, vous laissez tomber votre arme.",
+    "Coup affaiblissant : Vous infligez la moitié des dégâts sur les attaques de mêlée pendant 1d6 tours.",
+    "Hors de forme : Vous avez un désavantage sur les attaques de mêlée pendant 1d6 tours.",
+    "Suivi : Votre attaquant peut faire une attaque supplémentaire contre vous.",
+    "Pas eux ! Quadruplez les dégâts et faites un jet de sauvegarde de Sagesse DD 16. En cas d'échec, vous devenez effrayé des créatures du type de votre attaquant. Répétez ce jet chaque fois que vous affrontez des créatures de ce type jusqu'à en avoir vaincu 3d12.",
+    "Double problème : Relancez deux fois sur la table et appliquez les deux effets.",
+    "Cicatrice hideuse : Vous recevez une cicatrice permanente sur le visage, vous donnant un avantage sur les tests de Charisme (Intimidation) et un désavantage sur les tests de Charisme (Persuasion).",
+    "Quelque chose a glissé : Dégâts quadruplés, et votre CA est réduite de 1d8 pour 1d8 tours.",
+    "Ça vous a vraiment épuisé : Les points de vie perdus à cause de cette attaque ne peuvent être récupérés qu'après un repos long.",
+    "Hors de forme : Dégâts quadruplés, et vous avez un désavantage sur les attaques de mêlée pendant 1d8 tours.",
+    "Plaie ouverte : Pendant les 1d8 prochains tours, vous devez réussir un jet de sauvegarde de Constitution (DC 16) lorsque vous tentez de vous déplacer de 1,5 mètre ou plus. En cas d'échec, vous subissez 1d8 points de dégâts.",
+    "Ce petit doigt : Vous perdez un doigt, vous donnant un désavantage aux tests de Dextérité (Escamotage) et autres tests nécessitant des compétences motrices fines.",
+    "Hors de forme : Dégâts quadruplés, et vous avez un désavantage sur les attaques de mêlée pendant 1d8 tours.",
+    "Entaille affaiblissante : Vous infligez la moitié des dégâts sur les attaques de mêlée pendant 1d8 tours.",
+    "Ne perdez pas la tête ! Dégâts quadruplés et, si les dégâts sont égaux ou supérieurs à la moitié de vos points de vie maximum, vous êtes décapité.",
+    "Fin héroïque : Dégâts maximaux quadruplés. Si cette attaque vous tue, tous les alliés qui peuvent vous voir ont un avantage sur leurs attaques pendant 1d10 tours.",
+    "Artère sectionnée : Faites un jet de sauvegarde de Constitution (DC 18). En cas d'échec, vous subissez 1d10 points de dégâts au début de chaque tour pendant 1d10 tours. Si le maximum de dégâts est lancé, cet effet continue pour 1d8 tours supplémentaires (puis 1d6, etc.).",
+    "Désarmé : Faites un jet de sauvegarde de Dextérité (DC 18). En cas de succès, vous lâchez ce que vous tenez. En cas d'échec, vous subissez des dégâts quadruplés et perdez une main.",
+    "Lâchez-moi ! Vous perdez une main. Vous ne pouvez plus tenir quoi que ce soit à deux mains et ne pouvez tenir qu'un seul objet à la fois.",
+    "Frappe vorpale : Vous devez réussir un jet de sauvegarde de Dextérité (DC 20), sinon vous êtes décapité et mourrez."
+];
+
+SuccesCritiqueMJTranchantTexte.textContent = ListeSuccesCritiqueMJTranchant[indice]; // remplit le <p> correspondant 
                         }
 
 function SuccesCritiqueMJPerforant() {
+  const ListeSuccesCritiqueMJPerforant = [
+    "Tout est un jeu... : Lancez un d100. Sur un résultat de 2 ou moins, vous êtes aveuglé d’un œil.",
+    "Poumon perforé : Vous ne pouvez effectuer qu’une action ou une action bonus lors de votre prochain tour, mais pas les deux.",
+    "Perte de sang : Vos attaques infligent 1d4 dégâts en moins jusqu'à ce que vous receviez des soins magiques.",
+    "Perte d'oreille : Faites un jet de sauvegarde de Constitution DD 12. En cas d’échec, une grande partie de l’une de vos oreilles est sectionnée.",
+    "Pas le visage ! : Vous recevez une cicatrice permanente sur le visage.",
+    "Empalé : Vous prenez 1d4 points de dégâts au début de votre tour pendant 1d4 rounds.",
+    "Blessure profonde : Faites un jet de sauvegarde de Constitution DD 12. En cas d’échec, subissez 1d4 dégâts perforants supplémentaires.",
+    "Trouvez les jointures : Cette attaque inflige des dégâts maximum. Faites un jet de sauvegarde de Constitution DD 12. En cas d’échec, vous perdez votre prochaine action d’attaque.",
+    "Empalé : Vous prenez 1d4 points de dégâts au début de chaque tour pendant 1d4 rounds.",
+    "Cible facile : Dégâts doublés, et un adversaire dans un rayon de 18 mètres peut faire une attaque d’opportunité contre vous.",
+    "Perforation musculaire : Votre prochaine attaque avec une arme de mêlée inflige 1d4 dégâts en moins.",
+    "Cible ouverte : Un ennemi dans un rayon de 1,5 mètre peut faire une attaque d'opportunité contre vous.",
+    "Frappe distrayante : Dégâts doublés, et vous ne pouvez ni réagir ni effectuer d’actions bonus jusqu’à la fin de votre prochain tour.",
+    "Coup perçant d’armure : Faites un jet de sauvegarde de Dextérité DD 12. En cas d’échec, si vous portez une armure de mailles ou à anneaux, son efficacité est réduite de 1.",
+    "Hémorragie interne : Faites un jet de sauvegarde de Constitution DD 12. En cas d’échec, vous prenez 1d4 points de dégâts au début de votre tour pendant 1d4 rounds.",
+    "Vous avez manqué un endroit : Vous êtes vulnérable aux dégâts perforants pendant 1d4 rounds.",
+    "Rafale : Dégâts doublés, et votre attaquant peut faire une autre attaque contre vous avec un désavantage.",
+    "Douleurs lancinantes : Vous infligez des dégâts minimums avec toutes vos attaques pendant 1d4 rounds.",
+    "Cloué : L'attaque cloue votre pied au sol. Faites un jet de Force DD 12 pour vous libérer, en subissant 1d4 dégâts à chaque échec.",
+    "Talon d'Achille : Pendant 1d4 tours, vous devez réussir un jet de sauvegarde de Constitution DD 12 pour chaque mouvement de plus de 1,5 m. En cas d'échec, vous tombez à terre.",
+    "Coup au bras : Doublez les dégâts, et vous avez un désavantage sur les attaques basées sur la Force pendant 1d4 tours.",
+    "La cuisse prend : Votre vitesse est réduite de 1,5 m jusqu'à ce que vous finissiez un repos court.",
+    "Cloué : L'attaque cloue votre bras à un mur, une autre cible, ou votre propre corps. Faites un jet de Force DD 12 pour libérer votre bras, en subissant 1d4 dégâts à chaque échec.",
+    "Lâche-le ! : Vous laissez tomber ce que vous tenez (le MJ décide quelle main ou le détermine aléatoirement).",
+    "Perce paume : Doublez les dégâts, et vous êtes incapable de lancer des sorts avec composante somatique pendant 1d4 tours.",
+    "Os du rire : Vous avez un désavantage sur les attaques basées sur la Dextérité pendant 1d4 tours.",
+    "Tout est drôle... : Lancez un d100. Sur un résultat de 5 ou moins, vous êtes aveuglé d'un œil.",
+    "Blessure interne : À chaque tentative d'action en combat, vous devez réussir un jet de sauvegarde de Constitution DD 14, ou perdre votre action.",
+    "Maladie grave : Faites un jet de sauvegarde de Constitution DD 14 ou contractez une maladie. Pendant la maladie, vos points de vie maximum sont réduits de 1d10 chaque matin.",
+    "Lèvre fendue : Les sorts avec composante verbale ont 50 % de chances d'échouer jusqu'à ce que vous soyez soigné.",
+    "Arrêter l'hémorragie : Triplez les dégâts, et vous avez un désavantage sur les jets basés sur la Force, la Dextérité et la Constitution pendant 1d6 tours.",
+    "Hémorragie interne : Faites un jet de sauvegarde de Constitution DD 14. En cas d'échec, subissez 1d6 dégâts au début de votre tour pendant 1d6 tours.",
+    "Blessure profonde : Faites un jet de sauvegarde de Constitution DD 14. En cas d'échec, subissez 1d6 dégâts perforants supplémentaires.",
+    "Hémorragie interne : Vous subissez 1d6 dégâts au début de votre tour pendant 1d6 tours.",
+    "Brochette : Triplez les dégâts et, si c'était une attaque au corps à corps, l'arme reste coincée dans votre corps.",
+    "Coup transperçant : Faites un jet de sauvegarde de Dextérité DD 14. En cas d’échec, si vous portez une armure de mailles ou à anneaux, son efficacité est réduite de 2.",
+    "Cloué : L'attaque cloue votre pied au sol. Faites un test de Force DD 14 pour vous libérer, subissant 1d6 dégâts supplémentaires à chaque échec.",
+    "Quelque chose a glissé : Triplez les dégâts, et votre CA est réduite de 1d6 pour 1d6 tours.",
+    "Les cuisses touchées : Votre vitesse est réduite de 3 mètres jusqu'à ce que vous finissiez un repos court.",
+    "Talon d'Achille : Pendant 1d6 tours, vous devez faire un jet de sauvegarde de Constitution DD 14 pour tenter de bouger de 1,5 mètre ou plus. En cas d'échec, vous tombez à terre.",
+    "Cloué : L'attaque cloue votre bras à un mur, une autre cible, ou votre propre corps. Faites un test de Force DD 14 pour libérer votre bras, subissant 1d6 dégâts à chaque échec.",
+    "Lâche-le ! : Lâchez ce que vous tenez (le MJ décide de la main ou la détermine aléatoirement).",
+    "Transperceur de paume : Triplez les dégâts et vous êtes incapable de lancer des sorts avec une composante somatique pendant 1d6 tours.",
+    "Coup sur le nerf : Vous avez un désavantage sur les attaques basées sur la Dextérité pendant 1d6 tours.",
+    "Lèvre fendue : Quadruplez les dégâts et les sorts avec une composante verbale ont 75 % de chance d'échouer jusqu'à ce que vous soyez guéri.",
+    "Double problème : Relancez deux fois sur la table et appliquez les deux effets.",
+    "Sensations faibles : Vous avez un désavantage sur les jets basés sur la Force, la Dextérité et la Constitution pendant 1d8 tours. De plus, vous devez réussir un jet de sauvegarde de Constitution (DC 16) au début de chacun de vos tours. En cas d'échec, vous tombez à terre.",
+    "Empalé : Dégâts quadruplés, et vous subissez 1d8 points de dégâts au début de votre tour pendant les 1d8 prochains tours.",
+    "Hémorragie interne : Faites un jet de sauvegarde de Constitution (DC 16). En cas d'échec, vous subissez 1d8 points de dégâts perforants supplémentaires au début de chaque tour pendant 1d8 tours.",
+    "Quelque chose a glissé : Dégâts quadruplés, et votre CA est réduite de 1d8 pour 1d8 tours.",
+    "Cloué au sol : L'attaque cloue votre pied au sol. Faites un test de Force (DC 16) pour vous libérer, subissant 1d8 points de dégâts à chaque échec.",
+    "Infection horrible : Vous devez réussir un jet de sauvegarde de Constitution (DC 16) ou être empoisonné dans 1d4 heures.",
+    "Perce-paume : Dégâts quadruplés, et vous ne pouvez plus lancer de sorts nécessitant des composants somatiques, ni tenir quoi que ce soit dans une de vos mains (déterminée par le MJ), jusqu'à ce que vous terminiez un court repos.",
+    "Cloué : L'attaque cloue votre bras à un mur, à une autre cible, ou à votre propre corps. Faites un test de Force (DC 16) pour libérer votre bras, subissant 1d8 points de dégâts à chaque tentative échouée.",
+    "Sensations faibles : Vous avez un désavantage sur les jets basés sur la Force, la Dextérité et la Constitution pendant 1d10 tours. Vous devez aussi réussir un jet de sauvegarde de Constitution (DC 18) au début de chaque tour, sous peine de tomber à terre.",
+    "Touché en plein cœur : Faites un jet de sauvegarde de Constitution (DC 18). En cas d'échec, vous perdez 1/4 de vos points de vie maximum à la fin de votre tour pendant 3 tours.",
+    "Maudite jambe ! : À chaque entrée en combat, faites un jet de sauvegarde de Constitution (DC 12). En cas d'échec, vous avez un désavantage sur les attaques basées sur la Force et la Dextérité pendant 1d4 tours.",
+    "Quelque chose a glissé : Dégâts quadruplés, et votre CA est réduite de 1d10 pour 1d10 tours.",
+    "Ouvre-l'œil : Vous perdez un œil, vous donnant un désavantage aux tests de Sagesse (Perception) liés à la vue, et aux jets d'attaque à distance.",
+    "Perce-cœur : Vous devez réussir un jet de sauvegarde de Dextérité (DC 20), sinon votre cœur est transpercé, et vous mourrez."
+];
+
+SuccesCritiqueMJPerforantTexte.textContent = ListeSuccesCritiqueMJPerforant[indice]; // remplit le <p> correspondant 
                         }
 
 function SuccesCritiqueMJContondant() {
+  const ListeSuccesCritiqueMJContondant = [
+    "Coup sur la tête. Faites un jet de sauvegarde de Constitution DD 14. En cas d'échec, vous perdez définitivement 1 point en Intelligence.",
+    "Comment suis-je arrivé ici ? Vous oubliez les 1d12 derniers jours.",
+    "...Et reste à terre. Vous êtes repoussé de 3 mètres. Faites un jet de sauvegarde de Dextérité DD 14. En cas d'échec, vous êtes renversé et subissez 1d6 dégâts.",
+    "Strike ! Triplez les dégâts et vous êtes projeté contre une autre créature à 1,5 mètre de vous. Les deux doivent faire un jet de sauvegarde de Dextérité DD 14. En cas d'échec, subissez 1d6 dégâts contondants.",
+    "Coup écrasant. Faites un jet de sauvegarde de Dextérité DD 14. En cas d'échec, si vous portez une armure de plaques, son efficacité est réduite de 2.",
+    "Chancelant. Doublez les dégâts et toutes les attaques contre vous ont l'avantage pendant 1d6 tours.",
+    "Directement sur les tibias. Vous ne pouvez pas effectuer l'action \"course\" pendant 1d6 tours.",
+    "Directement sur les tibias. Vous ne pouvez pas effectuer l'action \"course\" pendant 1d6 tours.",
+    "Ce petit cochon... Triplez les dégâts, et votre vitesse est réduite de moitié jusqu'à ce que vous finissiez un repos court.",
+    "Chancelant. Toutes les attaques contre vous ont l'avantage pendant 1d6 tours.",
+    "Main écrasée. Vous avez un désavantage sur les tests de compétence utilisant vos mains ou vos bras jusqu'à ce que vous finissiez un repos long.",
+    "Coup sur les jointures. Triplez les dégâts, et vous avez un désavantage sur les attaques basées sur la Dextérité pendant 1d6 tours.",
+    "Lâche-le ! Lâchez ce que vous tenez (le MJ décide de la main ou la détermine aléatoirement).",
+    "Ça va s'arranger... Si vous portez un bouclier, son efficacité est réduite de 2.",
+    "Coup étourdissant. Faites un jet de sauvegarde de Constitution DD 16. En cas d'échec, vous êtes étourdi jusqu'à la fin de votre prochain tour.",
+    "Double problème. Relancez deux fois sur la table et appliquez les deux effets.",
+    "KO direct. Dégâts quadruplés, et faites un jet de sauvegarde de Constitution (DC 16). En cas d'échec, vous êtes inconscient.",
+    "...Et reste à terre. Vous êtes repoussé de 4,5 m. Faites un jet de sauvegarde de Dextérité (DC 16). En cas d'échec, vous tombez à terre et subissez 1d6 points de dégâts.",
+    "Chancelant. Dégâts quadruplés, et toutes les attaques contre vous ont un avantage pendant 1d8 tours.",
+    "Ce petit cochon... Votre vitesse est réduite de moitié jusqu'à ce que vous finissiez un repos court.",
+    "Genoux éclatés. Dégâts quadruplés, et vous avez un désavantage aux tests de compétence liés à l'utilisation de vos jambes jusqu'à la fin d'un repos long.",
+    "Côtes brisées. Chaque fois que vous tentez une action en combat, vous devez réussir un jet de sauvegarde de Constitution (DC 16), ou vous perdez votre action.",
+    "Mutilateur. Faites un jet de sauvegarde de Constitution (DC 16). En cas d'échec, votre score de Dextérité est réduit de manière permanente de 1.",
+    "Mauvaise fracture. Dégâts quadruplés, et vous êtes incapable d'utiliser un de vos bras pendant 1d6 + 6 semaines (le MJ décide lequel ou le détermine aléatoirement).",
+    "Qui suis-je ?! Faites un jet de sauvegarde de Constitution (DC 18). En cas d'échec, vous oubliez qui vous êtes et tout ce qui vous concerne. Vous perdez tous les avantages de votre classe, y compris vos capacités et sorts.",
+    "Bonne nuit ! Dégâts quadruplés, et vous êtes inconscient.",
+    "À découvert. Tous les ennemis à portée peuvent effectuer une attaque d'opportunité contre vous.",
+    "Main écrasée. Faites un jet de sauvegarde de Force (DC 18). En cas d'échec, vous êtes définitivement incapable de saisir avec l'une de vos mains (le MJ décide laquelle ou le détermine aléatoirement).",
+    "Jambe morte. Votre jambe est écrasée et devient inutilisable. Votre vitesse est réduite de moitié, et vous avez un désavantage aux tests de capacité et jets de sauvegarde utilisant la Force et la Dextérité.",
+    "Crâne broyé. Vous devez réussir un jet de sauvegarde de Dextérité (DC 20), sinon votre tête est écrasée, et vous mourrez."
+];
+
+
+  SuccesCritiqueMJContondantTexte.textContent = ListeSuccesCritiqueMJContondant[indice]; // remplit le <p> correspondant 
                         }
 
 function SuccesCritiqueMJMagique() {
+
+  const ListeSuccesCritiqueMJMagique = [
+  "Quoi ? : Vous êtes assourdi pendant 1 minute.",
+  "Explosion aveuglante : Vous êtes aveuglé. Vous échouez automatiquement aux tests de Sagesse (Perception) qui dépendent de la vue, et vous avez un désavantage aux tests de compétence, jets d’attaque, et jets de sauvegarde qui utilisent la vue.",
+  "Gelé : Vous subissez 1d4 dégâts de froid et êtes gelé. Tant que vous êtes gelé, vous subissez 1d4 dégâts de froid au début de chacun de vos tours. La glace peut être fondue par une action.",
+  "Souvenirs embrouillés : Votre modificateur d'Intelligence est réduit de 1 jusqu'à ce que vous terminiez un repos long.",
+  "Visions distrayantes : Votre modificateur de Sagesse est réduit de 1 jusqu'à ce que vous terminiez un repos long.",
+  "Colère des éléments : Si cette attaque inflige des dégâts d’acide, de froid, de feu, de foudre ou de poison, elle inflige des dégâts doublés ; les autres types de dégâts infligent des dégâts normaux.",
+  "Colère des éléments : Si cette attaque inflige des dégâts d’acide, de froid, de feu, de foudre ou de poison, elle inflige des dégâts doublés ; les autres types de dégâts infligent des dégâts normaux.",
+  "Absorption de vie : Votre modificateur de Constitution est réduit de 1 jusqu’à ce que vous terminiez un repos long.",
+  "Colère du mage : Si cette attaque inflige des dégâts de force, nécrotiques, psychiques, radiants ou de tonnerre, elle inflige des dégâts doublés ; les autres types de dégâts infligent des dégâts normaux.",
+  "Buveur de vie : Dégâts doublés et, si cette attaque inflige des dégâts d’acide, de poison ou de nécrose, votre modificateur de Constitution est réduit de 2 jusqu'à ce que vous terminiez un repos long.",
+  "Buveur de vie : Si cette attaque inflige des dégâts d’acide, de poison ou de nécrose, votre modificateur de Constitution est réduit de 2 jusqu'à ce que vous terminiez un repos long.",
+  "Barrage magique : Une cible supplémentaire à portée est affectée à moitié puissance, ou la zone d'effet du sort est augmentée de 1,5 mètre.",
+  "Énergie persistante : Faites un jet de sauvegarde de Constitution DD 12. En cas d’échec, vous subissez 1d4 dégâts (du même type que ceux infligés par cette attaque) au début de votre tour pendant les 1d4 prochains rounds.",
+  "Explosion : Dégâts doublés et, si cette attaque inflige des dégâts de force ou de tonnerre, vous êtes repoussé de 1d4 × 1,5 mètre.",
+  "Faiblesse persistante : Vous êtes vulnérable au type de dégâts subis lors de cette attaque pendant 1d4 rounds.",
+  "Drain d’esprit : Les points de vie perdus lors de cette attaque ne peuvent être restaurés, sauf par magie.",
+  "Énergie persistante : Dégâts maximum, et vous subissez 1d4 dégâts (du même type que ceux infligés par cette attaque) au début de votre tour pendant 1d4 rounds.",
+  "Dispersion : Dégâts doublés, et le sort inflige des dégâts normaux à une cible située dans un rayon de 1,5 mètre de vous.",
+  "Énergie crépitante. Votre modificateur de Dextérité est réduit de 1 jusqu'à ce que vous finissiez un repos long.",
+  "Affaiblissement. Si cette attaque inflige des dégâts d'acide, de poison ou nécrotiques, votre modificateur de Force est réduit de 2 jusqu'à ce que vous finissiez un repos long.",
+  "Érosion. Votre CA est réduite de 1d4 pendant 1d4 tours.",
+  "Ka-boom ! Doublez les dégâts, et si cette attaque inflige des dégâts de force ou de tonnerre, vous êtes mis à terre.",
+  "Énergie crépitante. Votre modificateur de Dextérité est réduit de 1 jusqu'à ce que vous finissiez un repos court.",
+  "Je le sens dans mes doigts... Si cette attaque inflige des dégâts d'acide, de poison ou nécrotiques, votre modificateur de Dextérité est réduit de 2 jusqu'à ce que vous finissiez un repos long.",
+  "Brouillard cérébral. Vous ne pouvez pas prendre de réactions pendant 1d4 tours.",
+  "Murmures de malheur. Doublez les dégâts, et vous subissez un malus de 1d4 à vos jets d'attaque pendant 1d4 tours.",
+  "Hein ? Vous êtes assourdi jusqu'à ce que vous finissiez un repos court.",
+  "Corrosif. Vous subissez 1d4 points de dégâts d'acide et êtes recouvert. Tant que vous êtes recouvert, vous subissez 1d4 points de dégâts d'acide au début de chaque tour. L'acide peut être neutralisé en une action.",
+  "Nécrosé. Vous subissez 1d4 points de dégâts nécrotiques et êtes nécrosé. Tant que vous êtes nécrosé, vous subissez 1d4 points de dégâts de feu au début de chaque tour. Un test de Sagesse (Médecine) DD 12 réussi enlève l'état de nécrosé.",
+  "Cor blimey, guv’nor. Vous développez un accent complètement différent de celui que vous aviez auparavant.",
+  "SILENCE ! Pendant 2d12 jours, chaque fois que vous tentez de parler, vous criez à pleine voix.",
+  "Vous vous sentez somnolent... Triplez les dégâts et, si cette attaque inflige des dégâts psychiques, vous tombez inconscient.",
+  "Barrage magique. Une cible supplémentaire à portée est affectée ou la zone d'effet du sort est augmentée de 3 mètres.",
+  "Énergie persistante. Faites un jet de sauvegarde de Constitution DD 14. En cas d'échec, subissez 1d4 dégâts (du même type que l'attaque) au début de votre tour pendant 1d6 tours.",
+  "Drain spirituel. Doublez les dégâts, et les points de vie perdus à cause de cette attaque ne peuvent être restaurés que par magie.",
+  "Creuset. Triplez les dégâts et lancez un d6. 1-3 : Vous devenez vulnérable à ce type de dégâts pendant 1 minute, 4 : Aucun effet, 5-6 : Vous devenez résistant à ce type de dégâts pendant 1 minute.",
+  "Érosion. Votre CA est réduite de 1d6 pour 1d6 tours.",
+  "Érosion. Votre CA est réduite de 1d6 pour 1d6 tours.",
+  "Grosse explosion. Si cette attaque inflige des dégâts de force ou de tonnerre, vous êtes repoussé de 1d6 × 5 pieds, subissant 1d4 dégâts contondants pour chaque tranche de 1,5 mètre parcourue, et vous êtes renversé.",
+  "Boom. Triplez les dégâts et, si cette attaque inflige des dégâts de force ou de tonnerre, vous êtes repoussé de 2d4 × 5 pieds.",
+  "Énergie crépitante. Votre modificateur de Dextérité est réduit de 2 jusqu'à ce que vous finissiez un repos court.",
+  "Épuisement de la force. Si cette attaque inflige des dégâts d'acide, de poison ou de nécrotique, votre modificateur de Force est réduit de 4 jusqu'à ce que vous finissiez un repos long.",
+  "Brouillard mental. Vous ne pouvez pas prendre de réactions pendant 1d6 tours.",
+  "Murmures de malheur. Doublez les dégâts, et vous subissez une pénalité de 1d6 sur vos jets d'attaque pendant 1d6 tours.",
+  "... Pendant 2d12 jours, vous êtes incapable de parler.",
+  "Double problème. Relancez deux fois sur la table et appliquez les deux effets.",
+  "Nous sommes tous fous ici... Dégâts quadruplés et, si cette attaque inflige des dégâts psychiques, vous développez une forme de folie à court terme (voir le Guide du Maître).",
+  "Barrage magique. Deux cibles supplémentaires dans la portée sont affectées, ou la zone d'effet du sort est augmentée de 4,5 m.",
+  "Énergie persistante. Dégâts quadruplés, et faites un jet de sauvegarde de Constitution (DC 16). En cas d'échec, vous subissez 1d8 points de dégâts (du même type que celui de cette attaque) au début de votre tour pendant 1d8 tours.",
+  "Drain d'esprit. Dégâts triplés, et les points de vie perdus à cause de cette attaque ne peuvent être soignés, sauf par magie.",
+  "Grosse explosion. Dégâts quadruplés et, si cette attaque inflige des dégâts de force ou de tonnerre, vous êtes repoussé de 1d8 x 1,5 mètre.",
+  "Affaiblissement majeur. Si cette attaque inflige des dégâts d'acide, de poison ou de nécrose, votre modificateur de Force est réduit de 4 jusqu'à ce que vous finissiez un repos long.",
+  "Drain d'esprit. Les points de vie perdus lors de cette attaque ne peuvent être restaurés, sauf par magie.",
+  "Érosion maximale. Votre CA est réduite de 1d6 pour 1d6 tours.",
+  "Érosion. Votre CA est réduite de 1d4 pendant 1d4 tours.",
+  "Triplez les dégâts.",
+  "Doublez les dégâts et relancez sur cette table.",
+];
+
+
+  SuccesCritiqueMJMagiqueTexte.textContent = ListeSuccesCritiqueMJMagique[indice]; // remplit le <p> correspondant  
                         }
 
 
 
 function SuccesCritiquePJTranchant() {
+
+  const ListeSuccesCritiquePJTranchant = [
+  "Entaille au front. Dégâts doublés, et la cible est aveuglée jusqu’à la fin de son prochain tour.",
+  "Frappe et cache-toi. Dégâts maximums, et vous pouvez utiliser votre réaction pour prendre l'action Se cacher.",
+  "Entaille terrifiante. Dégâts maximums, et la cible doit réussir un jet de sauvegarde de Sagesse DD 12 ou elle est effrayée jusqu’à la fin de son prochain tour.",
+  "Entaille à la joue. Dégâts doublés.",
+  "Nez ensanglanté. Dégâts maximums.",
+  "Coup vexant. Dégâts doublés, et la cible doit réussir un jet de sauvegarde de Constitution DD 12 ou elle ne peut pas prendre de réactions jusqu'à la fin de votre prochain tour.",
+  "Attaque de suivi. Dégâts maximums, et vous pouvez effectuer une autre attaque contre la même cible.",
+  "De la nuque aux côtelettes. Dégâts doublés.",
+  "Entaille aux côtes. Dégâts maximums.",
+  "Déjouer. Dégâts maximums, et vous pouvez utiliser votre réaction pour prendre l'action Désengagement.",
+  "Tendon tranché. Dégâts doublés, et la vitesse de la cible est réduite de moitié jusqu'à la fin de son prochain tour.",
+  "Balayage des jambes. Dégâts maximums, et la cible doit réussir un jet de sauvegarde de Dextérité DD 12 ou elle est renversée.",
+  "Entaille au mollet. Dégâts doublés.",
+  "Entaille basse. Dégâts maximums.",
+  "Récupération lente. Dégâts doublés, et la cible doit réussir un jet de sauvegarde de Constitution DD 12 ou elle peut effectuer une attaque en moins lors de son prochain tour.",
+  "On en a pour son argent. Dégâts maximums, et vous et la cible devez faire un test de Force contesté. Si la cible perd, son arme est partiellement cassée et inflige la moitié des dégâts jusqu'à ce qu'elle soit réparée.",
+  "Coup à l’avant-bras. Dégâts doublés.",
+  "Épaule entaillée. Dégâts maximums.",
+  "Entaille au front. Dégâts triplés, et la cible est aveuglée pendant 1d4 + 1 tours.",
+  "Esquive et tissage. Dégâts maximums, et vous pouvez utiliser votre réaction pour prendre l'action Esquive.",
+  "Entaille terrifiante. Dégâts maximums, et la cible doit réussir un jet de sauvegarde de Sagesse DD 14 ou elle est effrayée pendant 2d4 tours.",
+  "Coup de main. Dégâts maximums, et vous pouvez utiliser votre réaction pour prendre l’action Aide.",
+  "Entaille à la joue. Dégâts triplés.",
+  "Nez ensanglanté. Dégâts maximums, et vous relancez les dés de dégâts.",
+  "Coup vexant. Dégâts triplés, et la cible doit réussir un jet de sauvegarde de Constitution DD 14 ou elle ne peut pas prendre de réactions pendant 2d4 tours.",
+  "Attaque de suivi. Dégâts maximums, et vous pouvez effectuer une autre attaque avec avantage contre la même cible.",
+  "De la nuque aux côtelettes. Dégâts triplés.",
+  "Entaille aux côtes. Dégâts maximums, et vous relancez les dés de dégâts.",
+  "Tendon tranché. Dégâts triplés, et la vitesse de la cible est réduite à 5 pieds jusqu’à la fin de son prochain tour.",
+  "Balayage des jambes. Dégâts maximums, et la cible doit réussir un jet de sauvegarde de Dextérité DD 14 ou elle est renversée.",
+  "Entaille au mollet. Dégâts triplés.",
+  "Entaille basse. Dégâts maximums, et vous relancez les dés de dégâts.",
+  "Récupération lente. Dégâts triplés, et la cible doit réussir un jet de sauvegarde de Constitution DD 14 ou elle peut effectuer deux attaques en moins lors de son prochain tour.",
+  "On en a pour son argent. Dégâts maximums, et vous et la cible devez faire un test de Force contesté. Si la cible perd, son arme est partiellement cassée et inflige 1/4 des dégâts jusqu'à ce qu'elle soit réparée.",
+  "Épaule entaillée. Dégâts maximums, et vous relancez les dés de dégâts.",
+  "Coup à l’avant-bras. Dégâts triplés.",
+  "Entaille au front. Dégâts quadruplés, et la cible est aveuglée pendant 3d4 + 2 tours.",
+  "Entaille terrifiante. Dégâts maximums, et la cible doit réussir un jet de sauvegarde de Sagesse DD 16 ou elle est effrayée pendant 3d4 tours.",
+  "Entaille à la joue. Dégâts quadruplés.",
+  "Nez ensanglanté. Dégâts maximums doublés.",
+  "Coup vexant. Dégâts quadruplés, et la cible doit réussir un jet de sauvegarde de Constitution DD 16 ou elle ne peut pas prendre de réactions pendant 3d4 tours.",
+  "Attaque de suivi. Dégâts maximums, et vous pouvez effectuer une autre attaque.",
+  "De la nuque aux côtelettes. Dégâts quadruplés.",
+  "Entaille aux côtes. Dégâts maximums doublés.",
+  "Tendon tranché. Dégâts quadruplés, et la vitesse de la cible est réduite à 0 pied jusqu'à la fin de son prochain tour.",
+  "Balayage des jambes. Dégâts maximums, et la cible doit réussir un jet de sauvegarde de Dextérité DD 16 ou elle est renversée.",
+  "Entaille au mollet. Dégâts quadruplés.",
+  "Entaille basse. Dégâts maximums doublés.",
+  "Récupération lente. Dégâts quadruplés, et la cible doit réussir un jet de sauvegarde de Constitution DD 16 ou elle peut effectuer trois attaques en moins lors de son prochain tour.",
+  "On en a pour son argent. Dégâts maximums, et vous et la cible devez faire un test de Force contesté. Si la cible perd, son arme est brisée.",
+  "Coup à l’avant-bras. Dégâts quadruplés.",
+  "Présence imposante. Dégâts maximums, et vous pouvez utiliser votre réaction pour inspirer un allié dans un rayon de 30 pieds qui peut vous entendre. L’allié peut utiliser sa réaction pour faire une attaque d'arme.",
+  "Élan. Dégâts maximums, et votre vitesse est augmentée de 10 pieds pendant 1d6 tours.",
+  "Épaule entaillée. Dégâts maximums doublés.",
+  "Fendre. Dégâts maximums et, si les dégâts tuent la cible, tout dégât excédentaire est appliqué à une autre cible de votre choix à portée.",
+  "Ne perds pas la tête ! Dégâts quadruplés et, si les dégâts infligés à la cible sont égaux ou supérieurs à la moitié de ses points de vie maximum, elle est décapitée.",
+  "Éventré. Dégâts quadruplés et, si les dégâts infligés à la cible sont égaux ou supérieurs à la moitié de ses points de vie maximum, elle est éviscérée.",
+  "Je n'ai pas touché une goutte ! Dégâts quadruplés et, si les dégâts infligés à la cible sont égaux ou supérieurs à 1/4 de ses points de vie maximum, elle perd une jambe.",
+  "Désarmé. Dégâts quadruplés et, si les dégâts infligés à la cible sont égaux ou supérieurs à la moitié de ses points de vie maximum, elle perd un bras ou une main.",
+  "Frapper et courir. Dégâts quadruplés, et vous pouvez utiliser votre réaction pour prendre l'action Course."
+];
+
+SuccesCritiquePJTranchantTexte.textContent = ListeSuccesCritiquePJTranchant[indice]; // remplit le <p> correspondant  
                         }
 
 function SuccesCritiquePJPerforant() {
+
+  const ListeSuccesCritiquePJPerforant = [
+  "Oreille percée. Dégâts maximums.",
+  "Frappe rapide. Dégâts maximums, et vous pouvez utiliser votre réaction pour effectuer une autre attaque.",
+  "Avec un bâton pointu. Dégâts doublés, et la cible doit réussir un jet de sauvegarde de Dextérité DD 12 ou elle perd un œil (le MJ décide lequel).",
+  "En plein dans les lèvres. Dégâts maximums, et la cible ne peut pas parler pendant 1d4 tours.",
+  "Blessure au cou. Dégâts doublés.",
+  "Entre les épaules. Dégâts maximums.",
+  "Pression de l'avantage. Dégâts doublés et, si c'est une attaque de mêlée, vous pouvez effectuer un test de Force (Athlétisme) DD 16 pour augmenter les dégâts à des dégâts triples.",
+  "Suivi. Dégâts maximums, et vous pouvez effectuer une autre attaque avec désavantage contre la même cible.",
+  "Coup dans le ventre. Dégâts doublés.",
+  "Cloué. Dégâts maximums, et la vitesse de la cible est réduite à 0 jusqu'à la fin de son prochain tour.",
+  "Dans le genou. Dégâts maximums.",
+  "Cloué au sol. Dégâts doublés, et la cible est clouée au sol et devient entravée.",
+  "Tir de précision. Dégâts maximums, et tout ennemi de la cible à portée peut effectuer une attaque d'opportunité avec désavantage contre elle.",
+  "Cuisse percée. Dégâts doublés.",
+  "Coup d’épaule. Dégâts maximums.",
+  "Coup distrayant. Dégâts doublés, et la cible doit réussir un jet de sauvegarde de Constitution DD 12 ou elle subit un désavantage lors de sa prochaine attaque.",
+  "Trouver une ouverture. Dégâts maximums, et vous avez l’avantage sur votre prochaine attaque contre la cible.",
+  "Main percée. Dégâts doublés.",
+  "Oreille percée. Dégâts maximums, et vous relancez les dés de dégâts.",
+  "Blessure interne. Dégâts maximums, et la cible de votre attaque ne peut pas effectuer d'action bonus lors de son prochain tour.",
+  "Avec un bâton pointu. Dégâts triplés, et la cible doit réussir un jet de sauvegarde de Dextérité DD 14 ou elle perd un œil (le MJ décide lequel).",
+  "Mise en place. Dégâts maximums, et votre prochaine attaque contre la cible bénéficie de l’avantage.",
+  "En plein dans les lèvres. Dégâts maximums, et la cible ne peut pas parler pendant 2d4 tours.",
+  "Blessure au cou. Dégâts triplés.",
+  "Entre les épaules. Dégâts maximums, et vous relancez les dés de dégâts.",
+  "Pression de l'avantage. Dégâts triplés et, si c'est une attaque de mêlée, vous pouvez effectuer un test de Force (Athlétisme) DD 14 pour augmenter ces dégâts à des dégâts quadruples.",
+  "Suivi. Dégâts maximums, et vous pouvez effectuer une autre attaque contre la même cible.",
+  "Coup dans le ventre. Dégâts triplés.",
+  "Dans le genou. Dégâts maximums, et vous relancez les dés de dégâts.",
+  "Cloué. Dégâts triplés, et la cible est clouée au sol et devient entravée.",
+  "Tir de précision. Dégâts maximums, et tout ennemi de la cible à portée peut effectuer une attaque d'opportunité contre elle.",
+  "Cuisse percée. Dégâts triplés.",
+  "Coup d’épaule. Dégâts maximums, et vous relancez les dés de dégâts.",
+  "Coup distrayant. Dégâts triplés, et la cible doit réussir un jet de sauvegarde de Constitution DD 14 ou elle subit un désavantage lors de ses attaques pendant 1d4 + 1 tours.",
+  "Main percée. Dégâts triplés.",
+  "Trouver une ouverture. Dégâts maximums, et vous bénéficiez de l’avantage sur vos attaques contre la cible pendant 1d4 + 1 tours.",
+  "Oreille percée. Dégâts maximums doublés.",
+  "Avec un bâton pointu. Dégâts quadruplés, et la cible doit réussir un jet de sauvegarde de Dextérité DD 16 ou elle perd un œil.",
+  "En plein dans les lèvres. Dégâts maximums, et la cible ne peut pas parler pendant 3d4 tours.",
+  "Blessure au cou. Dégâts quadruplés.",
+  "Entre les épaules. Dégâts maximums doublés.",
+  "Pression de l'avantage. Dégâts quadruplés et, si c'est une attaque de mêlée, vous pouvez effectuer un test de Force (Athlétisme) DD 16 pour augmenter ces dégâts à des dégâts quintuples.",
+  "Suivi. Dégâts maximums, et vous pouvez effectuer une autre attaque avec avantage contre la même cible.",
+  "Coup dans le ventre. Dégâts quadruplés.",
+  "Dans le genou. Dégâts maximums doublés.",
+  "Cloué. Dégâts quadruplés, et la cible est clouée au sol et devient entravée.",
+  "Tir de précision. Dégâts maximums, et tout ennemi de la cible à portée peut effectuer une attaque d'opportunité avec avantage contre elle.",
+  "Cuisse percée. Dégâts quadruplés.",
+  "Coup d’épaule. Dégâts maximums doublés.",
+  "Coup distrayant. Dégâts quadruplés, et la cible doit réussir un jet de sauvegarde de Constitution DD 16 ou elle subit un désavantage lors de ses attaques pendant 2d4 + 2 tours.",
+  "Trouver une ouverture. Dégâts maximums, et vous bénéficiez de l’avantage sur vos attaques contre la cible pendant 2d4 + 2 tours.",
+  "Rejoindre le combat. Dégâts maximums, et vous pouvez utiliser votre réaction pour encourager un allié dans un rayon de 30 pieds qui peut vous entendre. L'allié peut utiliser sa réaction pour se déplacer jusqu'à sa vitesse vers vous.",
+  "Perforation d'armure. Dégâts maximums, et si la cible porte une armure, la CA de l'armure est réduite de 2.",
+  "Main percée. Dégâts quadruplés.",
+  "Blessure grave. Dégâts maximums, et la cible ne peut pas effectuer d’action lors de son prochain tour.",
+  "Point de pression. Dégâts quadruplés, et la cible doit réussir un jet de sauvegarde de Constitution DD 18 ou elle est paralysée.",
+  "Cœur transpercé. Dégâts quadruplés, et la cible perd 1/4 de ses points de vie maximum au début de son tour pendant 3 tours.",
+  "Faille dans l'armure. Dégâts quadruplés, et la cible devient vulnérable aux dégâts perforants pendant 1 minute.",
+  "Coup distrayant. Dégâts quadruplés, et la cible subit un désavantage lors de ses attaques jusqu'à la fin de la rencontre.",
+  "Frapper et blesser. Dégâts quadruplés, et la cible de votre attaque saigne, perdant 1d4 points de vie au début de son tour pendant 1d6 tours."
+];
+
+
+  SuccesCritiquePJPerforantTexte.textContent = ListeSuccesCritiquePJPerforant[indice]; // remplit le <p> correspondant  
                         }
 
 function SuccesCritiquePJContondant() {
+
+  const SuccesCritiquePJContondant = [
+  "Nez écrasé. Dégâts doublés.",
+  "Coup terrifiant. Dégâts maximums, et un ennemi dans un rayon de 30 pieds est effrayé de vous jusqu’à la fin de son prochain tour.",
+  "Coup sur le crâne. Dégâts maximums.",
+  "Bonne nuit ! Dégâts doublés, et la cible doit réussir un jet de sauvegarde de Constitution DD 12 ou elle est inconsciente.",
+  "Coup étourdissant. Dégâts maximums, et la cible doit réussir un jet de sauvegarde de Constitution DD 12 ou elle est étourdie.",
+  "Coup au ventre. Dégâts doublés.",
+  "Souffle coupé. Dégâts maximums.",
+  "Ramollir l'adversaire. Dégâts doublés, et la cible doit réussir un jet de sauvegarde de Constitution DD 12 ou elle subit un désavantage sur ses jets de sauvegarde jusqu’à la fin de son prochain tour.",
+  "Reculez ! Dégâts maximums, et la cible doit réussir un jet de sauvegarde de Constitution DD 12 ou elle est repoussée de 5 pieds.",
+  "Mains moites. Dégâts maximums, et si la cible tient une arme, elle la laisse tomber.",
+  "Coup bas. Dégâts doublés.",
+  "Coup au tibia. Dégâts maximums.",
+  "...Et restez à terre. Dégâts doublés, et la cible doit réussir un jet de sauvegarde de Constitution DD 12 ou elle est renversée.",
+  "Quelque chose s’est déplacé. Dégâts maximums, et la CA de la cible est réduite de 1d4 jusqu’à la fin de son prochain tour.",
+  "Coup sur les articulations. Dégâts maximums.",
+  "Épaule meurtrie. Dégâts maximums.",
+  "Lâche ça ! Dégâts doublés, et la cible doit réussir un jet de sauvegarde de Force ou de Dextérité DD 12 ou elle laisse tomber ce qu’elle tient.",
+  "Articulations contusionnées. Dégâts maximums, et la cible doit réussir un jet de sauvegarde de Constitution DD 12 ou elle subit un désavantage sur sa prochaine attaque en mêlée.",
+  "Nez écrasé. Dégâts triplés.",
+  "Briseur de bouclier. Dégâts maximums, et si la cible porte un bouclier, celui-ci est détruit.",
+  "Coup sur le crâne. Dégâts maximums, et vous relancez les dés de dégâts.",
+  "Point faible. Dégâts maximums, et votre prochaine attaque contre la cible inflige 3d6 dégâts supplémentaires.",
+  "Bonne nuit ! Dégâts triplés, et la cible doit réussir un jet de sauvegarde de Constitution DD 14 ou elle est inconsciente.",
+  "Coup étourdissant. Dégâts maximums, et la cible doit réussir un jet de sauvegarde de Constitution DD 14 ou elle est étourdie.",
+  "Coup au ventre. Dégâts triplés.",
+  "Souffle coupé. Dégâts maximums, et vous relancez les dés de dégâts.",
+  "Ramollir l'adversaire. Dégâts triplés, et la cible doit réussir un jet de sauvegarde de Constitution DD 14 ou elle subit un désavantage sur ses jets de sauvegarde pendant 1d4 + 1 tours.",
+  "Reculez ! Dégâts maximums, et la cible doit réussir un jet de sauvegarde de Constitution DD 14 ou elle est repoussée de 10 pieds.",
+  "Coup bas. Dégâts triplés.",
+  "Coup au tibia. Dégâts maximums, et vous relancez les dés de dégâts.",
+  "...Et restez à terre. Dégâts triplés, et la cible doit réussir un jet de sauvegarde de Constitution DD 14 ou elle est renversée.",
+  "Quelque chose s’est déplacé. Dégâts maximums, et la CA de la cible est réduite de 2d4 jusqu’à la fin de son prochain tour.",
+  "Coup sur les articulations. Dégâts triplés.",
+  "Épaule meurtrie. Dégâts maximums, et vous relancez les dés de dégâts.",
+  "Articulations contusionnées. Dégâts triplés, et la cible doit réussir un jet de sauvegarde de Constitution DD 14 ou elle subit un désavantage sur ses attaques pendant 1d4 + 1 tours.",
+  "Lâche ça ! Dégâts triplés, et la cible doit réussir un jet de sauvegarde de Force ou de Dextérité DD 14 ou elle laisse tomber ce qu’elle tient.",
+  "Nez écrasé. Dégâts quadruplés.",
+  "Coup sur le crâne. Dégâts maximums doublés.",
+  "Bonne nuit ! Dégâts quadruplés, et la cible doit réussir un jet de sauvegarde de Constitution DD 16 ou elle est inconsciente.",
+  "Coup étourdissant. Dégâts maximums, et la cible doit réussir un jet de sauvegarde de Constitution DD 16 ou elle est étourdie.",
+  "Coup au ventre. Dégâts quadruplés.",
+  "Souffle coupé. Dégâts maximums doublés.",
+  "Ramollir l'adversaire. Dégâts quadruplés, et la cible doit réussir un jet de sauvegarde de Constitution DD 16 ou elle subit un désavantage sur ses jets de sauvegarde pendant 2d4 + 2 tours.",
+  "Reculez ! Dégâts maximums, et la cible doit réussir un jet de sauvegarde de Constitution DD 16 ou elle est repoussée de 15 pieds.",
+  "Coup bas. Dégâts quadruplés.",
+  "Coup au tibia. Dégâts maximums doublés.",
+  "...Et restez à terre. Dégâts quadruplés, et la cible doit réussir un jet de sauvegarde de Constitution DD 16 ou elle est renversée.",
+  "Quelque chose s’est déplacé. Dégâts maximums, et la CA de la cible est réduite de 3d4 jusqu’à la fin de son prochain tour.",
+  "Coup sur les articulations. Dégâts quadruplés.",
+  "Épaule meurtrie. Dégâts maximums doublés.",
+  "Articulations contusionnées. Dégâts quadruplés, et la cible doit réussir un jet de sauvegarde de Constitution DD 16 ou elle subit un désavantage sur ses attaques pendant 2d4 + 2 tours.",
+  "Dégagez ! Dégâts maximums, et vous pouvez utiliser votre réaction pour inciter un allié à prendre l’action Désengagement.",
+  "Briseur de lame. Dégâts maximums, et si la cible manie une arme, celle-ci est détruite.",
+  "Articulations contusionnées. Dégâts maximums, et la cible doit réussir un jet de sauvegarde de Constitution DD 16 ou elle subit un désavantage sur ses attaques pendant 2d4 + 2 tours.",
+  "Voir des étoiles. Dégâts maximums, et la cible est étourdie jusqu’à la fin de son prochain tour.",
+  "Bonne nuit ! Dégâts quadruplés, et si les dégâts infligés à la cible sont égaux ou supérieurs à 1/4 de ses points de vie maximum, elle est inconsciente.",
+  "Attendrisseur. Dégâts quadruplés, et la cible devient vulnérable aux dégâts contondants pendant 1 minute.",
+  "Genou brisé. Dégâts quadruplés, et la vitesse de la cible est réduite de moitié. De plus, pour chaque tranche de 5 pieds parcourue, elle subit 1d6 dégâts.",
+  "Main broyée. Dégâts quadruplés, et la cible perd l'usage d'une de ses mains ou de ses bras.",
+  "Frapper et maintenir. Dégâts quadruplés, et vous pouvez utiliser votre réaction pour tenter de saisir la cible."
+];
+
+
+  SuccesCritiquePJContondantTexte.textContent = ListeSuccesCritiquePJContondant[indice]; // remplit le <p> correspondant  
                         }
 
 function SuccesCritiquePJMagique() {
+
+  const SuccesCritiquePJMagique = [
+    "Barrage magique. Dégâts maximums, et une cible supplémentaire dans la portée est affectée à moitié puissance, ou la zone d'effet du sort est augmentée de 1,5 m.",
+    "Avantage arcanique. Dégâts maximums, et vous avez l'avantage sur votre prochain jet d'attaque de sort.",
+    "Tempête de sorts. Dégâts doublés.",
+    "Impact. Dégâts maximums.",
+    "Drain de sorts. Dégâts doublés, et la cible doit réussir un jet de sauvegarde DD 12 en utilisant sa capacité de lanceur de sorts. En cas d'échec, elle ne peut pas lancer de sorts lors de son prochain tour.",
+    "Attaque guidée. Dégâts maximums, et la cible subit un désavantage sur ses jets de sauvegarde contre vos sorts pendant 1d4 tours.",
+    "Bombardement. Dégâts doublés.",
+    "Magie précise. Dégâts maximums.",
+    "Affichage terrifiant. Dégâts doublés, et tous les ennemis pouvant vous voir doivent réussir un jet de sauvegarde de Sagesse DD 12 ou ils sont effrayés de vous jusqu’à la fin de votre prochain tour.",
+    "Déconcerté. Dégâts maximums, et la cible ne peut pas prendre de réactions jusqu’à la fin de son prochain tour.",
+    "Surcharge de puissance. Dégâts maximums, et vous pouvez immédiatement relancer le même sort contre la même cible en dépensant un emplacement de sort normalement.",
+    "Explosion de puissance. Dégâts doublés.",
+    "Sort ciblé. Dégâts maximums.",
+    "Grosse explosion. Dégâts doublés. Si cette attaque inflige des dégâts de force ou de tonnerre, et si la cible est de taille Large ou plus petite, elle est repoussée de 1d4 × 1,5 m, subissant 1d6 dégâts contondants pour chaque tranche de 1,5 m parcourue.",
+    "La résistance est futile. Dégâts maximums et, si la cible est résistante à ce type de dégâts, elle perd cette résistance pendant 1 minute.",
+    "Éruption. Dégâts doublés.",
+    "Assaut. Dégâts maximums.",
+    "Je n'en voulais pas de toute façon... Dégâts doublés, et un objet non magique que la cible tient ou porte est également affecté par le type de dégâts du sort.",
+    "Barrage magique. Dégâts maximums, et deux cibles supplémentaires dans la portée sont affectées à moitié puissance, ou la zone d'effet du sort est augmentée de 3 m.",
+    "Siphon de vie. Dégâts maximums, et vous regagnez des points de vie égaux à la moitié des dégâts infligés.",
+    "Tempête de sorts. Dégâts triplés.",
+    "Récupération arcanique. Dégâts maximums, et vous regagnez un emplacement de sort dont le niveau est égal ou inférieur à la moitié du sort que vous venez de lancer (minimum 1er niveau).",
+    "Impact. Dégâts maximums, et vous relancez les dés de dégâts.",
+    "Drain de sorts. Dégâts triplés, et la cible doit réussir un jet de sauvegarde DD 14 en utilisant sa capacité de lanceur de sorts. En cas d'échec, elle ne peut pas lancer de sorts pendant 1d4 + 1 tours.",
+    "Attaque guidée. Dégâts maximums, et la cible subit un désavantage sur ses jets de sauvegarde contre vos sorts pendant 2d4 tours.",
+    "Bombardement. Dégâts triplés.",
+    "Magie précise. Dégâts maximums, et vous relancez les dés de dégâts.",
+    "Affichage terrifiant. Dégâts triplés, et tous les ennemis pouvant vous voir doivent réussir un jet de sauvegarde de Sagesse DD 14 ou ils sont effrayés de vous pendant 1d4 + 1 tours.",
+    "Surcharge de puissance. Dégâts maximums, et vous pouvez immédiatement relancer le même sort contre une cible dans la portée en dépensant un emplacement de sort normalement.",
+    "Explosion de puissance. Dégâts triplés.",
+    "Sort ciblé. Dégâts maximums, et vous relancez les dés de dégâts.",
+    "Grosse explosion. Dégâts triplés. Si cette attaque inflige des dégâts de force ou de tonnerre, et si la cible est de taille Large ou plus petite, elle est repoussée de 3d4 × 1,5 m, subissant 1d6 dégâts contondants pour chaque tranche de 1,5 m parcourue.",
+    "La résistance est futile. Dégâts maximums, et si la cible n'est pas résistante à ce type de dégâts, elle devient vulnérable à ce type de dégâts pendant 1 minute.",
+    "Éruption. Dégâts triplés.",
+    "Je n'en voulais pas de toute façon... Dégâts triplés, et deux objets non magiques que la cible tient ou porte sont également affectés par le type de dégâts du sort.",
+    "Assaut. Dégâts maximums, et vous relancez les dés de dégâts.",
+    "Barrage magique. Dégâts maximums, et trois cibles supplémentaires dans la portée sont affectées à moitié puissance, ou la zone d'effet du sort est augmentée de 4,5 m.",
+    "Tempête de sorts. Dégâts quadruplés.",
+    "Impact. Dégâts maximums doublés.",
+    "Drain de sorts. Dégâts quadruplés, et la cible doit réussir un jet de sauvegarde DD 16 en utilisant sa capacité de lanceur de sorts. En cas d'échec, elle ne peut pas lancer de sorts pendant 3d4 tours.",
+    "Attaque guidée. Dégâts maximums, et la cible subit un désavantage sur ses jets de sauvegarde contre vos sorts pendant 3d4 tours.",
+    "Bombardement. Dégâts quadruplés.",
+    "Magie précise. Dégâts maximums doublés.",
+    "Affichage terrifiant. Dégâts quadruplés, et tous les ennemis pouvant vous voir doivent réussir un jet de sauvegarde de Sagesse DD 16 ou ils sont effrayés de vous pendant 2d4 + 2 tours.",
+    "Surcharge de puissance. Dégâts maximums, et vous pouvez immédiatement relancer le même sort contre une cible dans la portée. Ce second sort ne consomme pas d'emplacement de sort.",
+    "Explosion de puissance. Dégâts quadruplés.",
+    "Sort ciblé. Dégâts maximums, et vous relancez les dés de dégâts.",
+    "Grosse explosion. Dégâts quadruplés. Si cette attaque inflige des dégâts de force ou de tonnerre, et si la cible est de taille Large ou plus petite, elle est repoussée de 3d4 × 1,5 m, subissant 1d6 dégâts contondants pour chaque tranche de 1,5 m parcourue.",
+    "La résistance est futile. Dégâts maximums, et la cible devient vulnérable à ce type de dégâts pendant 1 minute.",
+    "Éruption. Dégâts quadruplés.",
+    "Assaut. Dégâts maximums doublés.",
+    "Lancer complémentaire. Dégâts maximums, et vous pouvez utiliser votre réaction pour renforcer un allié dans un rayon de 9 m qui peut vous entendre. L'allié peut utiliser sa réaction pour lancer un sort.",
+    "Invisibilité imprévisible. Dégâts maximums, et vous devenez invisible jusqu'à la fin de votre prochain tour.",
+    "Je n'en voulais pas de toute façon... Dégâts quadruplés, et trois objets que la cible tient ou porte sont affectés par le type de dégâts du sort.",
+    "Arcane régénéré. Dégâts maximums, et vous regagnez l'emplacement de sort que vous avez utilisé pour lancer ce sort.",
+    "Rajeunissement. Dégâts quadruplés, et vous regagnez un emplacement de sort. Lancez un d6 pour déterminer le niveau de cet emplacement.",
+    "Détonation. Dégâts quadruplés, et toutes les créatures dans un rayon de 4,5 m autour de la cible sont également affectées.",
+    "Disparition soudaine. Dégâts quadruplés, et la cible doit réussir un jet de sauvegarde de Sagesse DD 18 ou elle est incapable de vous voir pendant 1 minute.",
+    "Affichage terrifiant. Dégâts quadruplés, et tous les ennemis pouvant vous voir doivent réussir un jet de sauvegarde de Sagesse DD 18 ou ils sont effrayés de vous. Un ennemi peut répéter ce jet de sauvegarde à la fin de chacun de ses tours pour ne plus être effrayé.",
+    "Frapper et nuire. Dégâts quadruplés, et la cible de votre attaque subit 3d4 dégâts de force supplémentaires."
+];
+
+  SuccesCritiquePJMagiqueTexte.textContent = ListeSuccesCritiquePJMagique[indice]; // remplit le <p> correspondant  
                         }
 
 
@@ -307,7 +1120,16 @@ function Reset() { // vide les lignes d'effets
   table=""
 }
 
-EffetCritiqueSubmit.addEventListener('click', EffetCritique);
+function Echec() {
+  if (TableEchec === "EchecCritiqueCac") {EchecCritiqueCac}
+  else if(TableEchec === "EchecCritiqueDist") {EchecCritiqueDist} 
+  else if(TableEchec === "EchecCritiqueMains") {EchecCritiqueMains} 
+  else {EchecCritiqueMagique}
+}
+
+
+
+EchecSubmit.addEventListener('click', Echec);
 ChanceSubmit.addEventListener('click', EffetChance);
 selection.addEventListener('change', Reset);
 
