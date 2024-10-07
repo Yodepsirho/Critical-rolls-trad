@@ -6,6 +6,7 @@
         <title>Tables de critiques</title>
 
         <style>
+            /* General */
             :root {
                 --c-yellow: #eec857;
                 --c-blue: #1e879d;
@@ -36,18 +37,19 @@
                 background-color: #ddd;
             }
 
-            .outils-critiques {
+            .outil-critiques {
                 min-height: 400px;
                 width: 950px;
             }
 
-            .outils-critiques .tabs {
+            /* Tabs */
+            .outil-critiques .tabs {
                 display: flex;
                 justify-content: space-between;
                 user-select: none;
             }
 
-            .outils-critiques .tab {
+            .outil-critiques .tab {
                 cursor: pointer;
                 display: flex;
                 align-items: center;
@@ -61,47 +63,43 @@
                 font-weight: 700;
                 box-shadow: rgba(0, 0, 0, 0.35) 0px -20px 20px -20px inset;
             }
-            .outils-critiques .tab:first-child { margin-left: 0; }
-            .outils-critiques .tab:last-child { margin-right: 0; }
+            .outil-critiques .tab:first-child { margin-left: 0; }
+            .outil-critiques .tab:last-child { margin-right: 0; }
 
-            .outils-critiques .tab.active {
+            .outil-critiques .tab.active {
                 background-color: var(--c-blue);
                 box-shadow: none;
             }
 
-            .outils-critiques .tab img, .outils-critiques .tab svg {
+            .outil-critiques .tab img, .outil-critiques .tab svg {
                 display: inline-block;
                 margin-right: 10px;
                 width: 30px;
             }
 
-            .outils-critiques .pages {
+            /* Pages */
+            .outil-critiques .pages {
                 padding: 30px;
                 padding-bottom: 20px;
                 background-color: var(--c-blue);
                 user-select: none;
             }
 
-            .outils-critiques .page {
+            .outil-critiques .page {
                 display: none;
             }
-            .outils-critiques .page.active {
+            .outil-critiques .page.active {
                 display: block;
             }
 
-            .outils-critiques .page h2 {
-                margin-top: 0;
-                margin-bottom: 10px;
-                display: none;
-            }
-
-            .outils-critiques .page .options {
+            /* Options */
+            .outil-critiques .page .options {
                 display: flex;
                 flex-wrap: wrap;
                 justify-content: space-between;
             }
 
-            .outils-critiques .page .option {
+            .outil-critiques .page .option {
                 cursor: pointer;
                 width: calc(50% - 5px);
                 padding: 10px;
@@ -109,24 +107,25 @@
                 margin-bottom: 10px;
                 border-radius: 5px;
             }
-            .outils-critiques .page .option.active {
+            .outil-critiques .page .option.active {
                 background-color: #fff;
             }
 
-            .outils-critiques .des {
+            /* Dés */
+            .outil-critiques .des {
                 padding: 30px;
                 padding-top: 0;
                 background-color: var(--c-blue);
                 user-select: none;
             }
 
-            .outils-critiques .des .line {
+            .outil-critiques .des .line {
                 display: flex;
                 flex-wrap: wrap;
                 margin-bottom: 20px;
             }
 
-            .outils-critiques .des .label {
+            .outil-critiques .des .label {
                 color: var(--c-yellow);
                 font-size: 1.3rem;
                 font-weight: 700;
@@ -134,7 +133,7 @@
                 padding-top: 5px;
             }
 
-            .outils-critiques .des .number {
+            .outil-critiques .des .number {
                 cursor: pointer;
                 color: var(--c-yellow);
                 font-weight: 700;
@@ -149,12 +148,13 @@
                 margin-right: 10px;
                 margin-bottom: 10px;
             }
-            .outils-critiques .des .number.active {
+            .outil-critiques .des .number.active {
                 color: var(--c-brown);
                 background-color: var(--c-yellow);
             }
 
-            .outils-critiques .effet {
+            /* Effet */
+            .outil-critiques .effet {
                 position: relative;
                 padding: 30px;
                 padding-top: 45px;
@@ -165,7 +165,7 @@
                 border-bottom-right-radius: 10px;
             }
 
-            .outils-critiques .effet .label {
+            .outil-critiques .effet .label {
                 position: absolute;
                 top: 1px;
                 left: 2px;
@@ -174,28 +174,29 @@
                 font-weight: 700;
             }
 
-            .outils-critiques p {
+            .outil-critiques p {
                 margin: 0;
                 color: var(--c-brown);
             }
 
-            .outils-critiques i {
+            .outil-critiques i {
                 opacity: 0.65;
             }
 
+            /* Responsive */
             @media screen and (max-width: 1000px) {
-                .outils-critiques {
+                .outil-critiques {
                     width: calc(100% - 32px);
                     display: flex;
                     justify-content: center;
                 }
 
-                .outils-critiques .tabs {
+                .outil-critiques .tabs {
                     flex-direction: column;
                     justify-content: flex-start;
                 }
 
-                .outils-critiques .tab {
+                .outil-critiques .tab {
                     flex-direction: column;
                     margin: 3px 0;
                     border-top-right-radius: 0;
@@ -203,28 +204,28 @@
                     max-width: 90px;
                     box-shadow: rgba(0, 0, 0, 0.35) -20px 0 20px -20px inset;
                 }
-                .outils-critiques .tab:first-child { margin-top: 0; }
+                .outil-critiques .tab:first-child { margin-top: 0; }
 
-                .outils-critiques .tab .text {
+                .outil-critiques .tab .text {
                     font-size: 0.8rem;
                     font-weight: 400;
                     text-align: center;
                 }
 
-                .outils-critiques .pages {
+                .outil-critiques .pages {
                     border-top-right-radius: 10px;
                 }
 
-                .outils-critiques .page .option {
+                .outil-critiques .page .option {
                     width: 100%;
                 }
 
-                .outils-critiques .des .label {
+                .outil-critiques .des .label {
                     width: 100%;
                     margin-bottom: 5px;
                 }
 
-                .outils-critiques .effet {
+                .outil-critiques .effet {
                     min-height: 200px;
                 }
             }
@@ -233,8 +234,9 @@
 
     <body>
 
-        <div class="outils-critiques">
+        <div class="outil-critiques">
 
+            <!-- Tabs -->
             <div class="tabs">
                 <div class="tab active" data-category="echec">
                     <span class="icon">
@@ -273,9 +275,10 @@
             </div>
 
             <div class="content">
+
+                <!-- Contenu tabs -->
                 <div class="pages">
                     <div class="page active" data-category="echec">
-                        <h2>Echecs critiques</h2>
                         <div class="options">
                             <div class="option active" data-type="cac">Càc</div>
                             <div class="option" data-type="distance">Distance</div>
@@ -284,7 +287,6 @@
                         </div>
                     </div>
                     <div class="page" data-category="reussite_mj">
-                        <h2>Réussite critique du MJ</h2>
                         <div class="options">
                             <div class="option" data-type="tranchant">Tranchant</div>
                             <div class="option" data-type="perforant">Perforant</div>
@@ -293,7 +295,6 @@
                         </div>
                     </div>
                     <div class="page" data-category="reussite_joueur">
-                        <h2>Réussite critique du Joueur</h2>
                         <div class="options">
                             <div class="option" data-type="tranchant">Tranchant</div>
                             <div class="option" data-type="perforant">Perforant</div>
@@ -302,7 +303,6 @@
                         </div>
                     </div>
                     <div class="page" data-category="chance_malchance">
-                        <h2>Chances et malchances</h2>
                         <div class="options">
                             <div class="option" data-type="chance">Chance</div>
                             <div class="option" data-type="malchance">Malchance</div>
@@ -310,6 +310,7 @@
                     </div>
                 </div>
         
+                <!-- Dés -->
                 <div class="des">
                     <div class="line d10">
                         <div class="label">D10</div>
@@ -336,6 +337,7 @@
 
                 </div>
         
+                <!-- Effets -->
                 <div class="effet">
                     <div class="label">Effet :</div>
                     <p class="resultat"><i>Remplissez les options ci-dessus pour voir l'effet associé.</i></p>
@@ -1185,7 +1187,7 @@
 
 
         // Récupération des différents éléments dans le DOM
-        const container = document.querySelector('.outils-critiques');
+        const container = document.querySelector('.outil-critiques');
         const tabs = container.querySelectorAll('.tab');
         const contents = container.querySelectorAll('.page');
         const options = container.querySelectorAll('.option');
