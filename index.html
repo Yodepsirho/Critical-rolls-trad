@@ -2,232 +2,276 @@
 <html lang="fr">
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=EB+Garamond:wght@400;600&display=swap" rel="stylesheet">
 
         <title>Tables de critiques</title>
 
         <style>
-            /* General */
             :root {
-                --c-yellow: #eec857;
-                --c-blue: #1e879d;
-                --c-bluedark: #005d7f;
-                --c-brown: #782002;
+                --nuit: #17100b;
+                --cuir: #2e1b10;
+                --cuir-clair: #4a2d1a;
+                --parchemin: #efe0bb;
+                --parchemin-clair: #f8ecc9;
+                --encre: #2b1a0e;
+                --sang: #7a1f1a;
+                --or: #c9a13b;
+                --or-clair: #e8c766;
+                --titre: "Cinzel", "Trajan Pro", Georgia, "Times New Roman", serif;
+                --texte: "EB Garamond", Georgia, "Times New Roman", serif;
             }
 
+            * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-            * {
-                box-sizing: border-box;
-            }
-
-            html {
-                margin: 0;
-                padding: 0;
-                font-family: sans-serif;
-            }
+            html { margin: 0; padding: 0; -webkit-text-size-adjust: 100%; }
 
             body {
                 margin: 0;
-                padding: 0;
-                width: 100%;
                 min-height: 100vh;
+                padding: 20px 14px 40px;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                justify-content: center;
-                background-color: #ddd;
+                font-family: var(--texte);
+                font-size: 1.1rem;
+                color: var(--encre);
+                background: radial-gradient(ellipse at top, #3a2517 0%, var(--nuit) 70%) fixed;
             }
 
-            .outil-critiques {
-                min-height: 400px;
-                width: 950px;
+            .outil-critiques { width: 100%; max-width: 950px; }
+
+            .outil-critiques h1 {
+                margin: 8px 0 10px;
+                text-align: center;
+                font-family: var(--titre);
+                font-size: clamp(1.6rem, 6vw, 2.4rem);
+                letter-spacing: .04em;
+                color: var(--or-clair);
+                text-shadow: 0 2px 0 #000, 0 0 18px rgba(201, 161, 59, .35);
+            }
+
+            .outil-critiques .ornement {
+                position: relative;
+                height: 2px;
+                max-width: 480px;
+                margin: 0 auto 24px;
+                background: linear-gradient(90deg, transparent, var(--or), transparent);
+            }
+            .outil-critiques .ornement::after {
+                content: "";
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                width: 12px;
+                height: 12px;
+                background: var(--sang);
+                border: 2px solid var(--or);
+                transform: translate(-50%, -50%) rotate(45deg);
             }
 
             /* Tabs */
             .outil-critiques .tabs {
                 display: flex;
-                justify-content: space-between;
+                gap: 6px;
+                padding: 0 10px;
+                position: relative;
+                z-index: 1;
                 user-select: none;
             }
 
             .outil-critiques .tab {
+                flex: 1;
                 cursor: pointer;
                 display: flex;
                 align-items: center;
-                background-color: var(--c-bluedark);
-                border-top-left-radius: 10px;
-                border-top-right-radius: 10px;
-                margin: 0 3px;
-                padding: 10px;
-                line-height: 1;
-                font-size: 1rem;
+                justify-content: center;
+                padding: 10px 8px;
+                font-family: var(--titre);
                 font-weight: 700;
-                box-shadow: rgba(0, 0, 0, 0.35) 0px -20px 20px -20px inset;
+                font-size: .95rem;
+                line-height: 1.15;
+                color: var(--or-clair);
+                background: linear-gradient(var(--cuir-clair), var(--cuir));
+                border: 2px solid var(--or);
+                border-bottom: 0;
+                border-radius: 8px 8px 0 0;
             }
-            .outil-critiques .tab:first-child { margin-left: 0; }
-            .outil-critiques .tab:last-child { margin-right: 0; }
-
             .outil-critiques .tab.active {
-                background-color: var(--c-blue);
-                box-shadow: none;
+                margin-bottom: -3px;
+                padding-bottom: 13px;
+                color: var(--sang);
+                background: var(--parchemin);
             }
 
-            .outil-critiques .tab img, .outil-critiques .tab svg {
-                display: inline-block;
+            .outil-critiques .tab .icon {
+                flex: none;
+                display: inline-flex;
                 margin-right: 10px;
-                width: 30px;
+                padding: 5px;
+                background: var(--parchemin);
+                border: 2px solid var(--or);
+                border-radius: 50%;
             }
-
-            /* Pages */
-            .outil-critiques .pages {
-                padding: 30px;
-                padding-bottom: 20px;
-                background-color: var(--c-blue);
-                user-select: none;
-            }
-
-            .outil-critiques .page {
-                display: none;
-            }
-            .outil-critiques .page.active {
+            .outil-critiques .tab svg, .outil-critiques .tab img {
                 display: block;
+                width: 28px;
+                height: auto;
             }
+
+            /* Panneau */
+            .outil-critiques .content {
+                padding: 20px;
+                background: var(--parchemin);
+                border: 3px double var(--or);
+                border-radius: 0 0 6px 6px;
+                box-shadow: 0 12px 30px rgba(0, 0, 0, .65), inset 0 0 50px rgba(110, 60, 15, .35);
+            }
+
+            .outil-critiques .page { display: none; }
+            .outil-critiques .page.active { display: block; }
 
             /* Options */
+            .outil-critiques .pages { user-select: none; }
+
             .outil-critiques .page .options {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: space-between;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
             }
 
             .outil-critiques .page .option {
                 cursor: pointer;
-                width: calc(50% - 5px);
+                min-height: 48px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 padding: 10px;
-                background-color: var(--c-yellow);
-                margin-bottom: 10px;
-                border-radius: 5px;
+                text-align: center;
+                font-family: var(--titre);
+                font-weight: 700;
+                color: var(--or-clair);
+                background: linear-gradient(var(--cuir-clair), var(--cuir));
+                border: 2px solid var(--or);
+                border-radius: 4px;
             }
             .outil-critiques .page .option.active {
-                background-color: #fff;
+                background: linear-gradient(#9a2a22, var(--sang));
+                box-shadow: 0 0 0 2px var(--parchemin), 0 0 0 4px var(--sang);
             }
 
             /* Dés */
-            .outil-critiques .des {
-                padding: 30px;
-                padding-top: 0;
-                background-color: var(--c-blue);
-                user-select: none;
-            }
+            .outil-critiques .des { margin-top: 24px; user-select: none; }
 
             .outil-critiques .des .line {
                 display: flex;
                 flex-wrap: wrap;
-                margin-bottom: 20px;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 16px;
             }
 
             .outil-critiques .des .label {
-                color: var(--c-yellow);
+                width: 60px;
+                font-family: var(--titre);
                 font-size: 1.3rem;
                 font-weight: 700;
-                width: 60px;
-                padding-top: 5px;
+                color: var(--sang);
             }
 
             .outil-critiques .des .number {
                 cursor: pointer;
-                color: var(--c-yellow);
-                font-weight: 700;
-                line-height: 1;
-                border: 1px dotted var(--c-yellow);
-                border-radius: 4px;
-                height: 35px;
-                width: 35px;
+                width: 44px;
+                height: 44px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                margin-right: 10px;
-                margin-bottom: 10px;
+                font-family: var(--titre);
+                font-weight: 700;
+                line-height: 1;
+                color: var(--encre);
+                background: #fbf3da;
+                border: 2px solid var(--cuir-clair);
+                border-radius: 4px;
             }
             .outil-critiques .des .number.active {
-                color: var(--c-brown);
-                background-color: var(--c-yellow);
+                color: var(--or-clair);
+                background: var(--sang);
+                border-color: var(--or);
             }
 
             /* Effet */
             .outil-critiques .effet {
-                position: relative;
-                padding: 30px;
-                padding-top: 45px;
-                background-color: var(--c-yellow);
-                border: 10px solid var(--c-bluedark);
+                margin-top: 8px;
+                padding: 16px 18px 20px;
                 min-height: 150px;
-                border-bottom-left-radius: 10px;
-                border-bottom-right-radius: 10px;
+                background: var(--parchemin-clair);
+                border: 2px solid var(--sang);
+                border-radius: 4px;
+                box-shadow: inset 0 0 0 3px var(--parchemin-clair), inset 0 0 0 4px var(--or);
             }
 
             .outil-critiques .effet .label {
-                position: absolute;
-                top: 1px;
-                left: 2px;
-                color: var(--c-brown);
-                text-transform: uppercase;
+                margin-bottom: 8px;
+                font-family: var(--titre);
+                font-size: .85rem;
                 font-weight: 700;
+                letter-spacing: .1em;
+                text-transform: uppercase;
+                color: var(--sang);
             }
 
             .outil-critiques p {
                 margin: 0;
-                color: var(--c-brown);
+                font-size: 1.15rem;
+                line-height: 1.5;
+                color: var(--encre);
             }
 
-            .outil-critiques i {
-                opacity: 0.65;
+            .outil-critiques i { opacity: 0.65; }
+
+            @media (hover: hover) {
+                .outil-critiques .tab:hover, .outil-critiques .option:hover { filter: brightness(1.2); }
+                .outil-critiques .number:hover { background: var(--parchemin); }
             }
 
-            /* Responsive */
-            @media screen and (max-width: 1000px) {
-                .outil-critiques {
-                    width: calc(100% - 32px);
-                    display: flex;
-                    justify-content: center;
-                }
+            /* Mobile / portrait */
+            @media screen and (max-width: 720px) {
+                body { padding: 14px 10px 30px; }
 
                 .outil-critiques .tabs {
-                    flex-direction: column;
-                    justify-content: flex-start;
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 6px;
+                    padding: 0;
                 }
-
-                .outil-critiques .tab {
+                .outil-critiques .tab,
+                .outil-critiques .tab.active {
                     flex-direction: column;
-                    margin: 3px 0;
-                    border-top-right-radius: 0;
-                    border-bottom-left-radius: 10px;
-                    max-width: 90px;
-                    box-shadow: rgba(0, 0, 0, 0.35) -20px 0 20px -20px inset;
-                }
-                .outil-critiques .tab:first-child { margin-top: 0; }
-
-                .outil-critiques .tab .text {
-                    font-size: 0.8rem;
-                    font-weight: 400;
+                    margin-bottom: 0;
+                    padding: 10px 6px;
+                    font-size: .9rem;
                     text-align: center;
+                    border-bottom: 2px solid var(--or);
+                    border-radius: 8px;
+                }
+                .outil-critiques .tab .icon { margin: 0 0 6px; }
+
+                .outil-critiques .content {
+                    margin-top: 10px;
+                    padding: 14px;
+                    border-radius: 6px;
                 }
 
-                .outil-critiques .pages {
-                    border-top-right-radius: 10px;
-                }
+                .outil-critiques .des .line { display: grid; gap: 8px; }
+                .outil-critiques .des .line.d10 { grid-template-columns: repeat(5, 1fr); }
+                .outil-critiques .des .line.d6 { grid-template-columns: repeat(6, 1fr); }
+                .outil-critiques .des .label { grid-column: 1 / -1; width: auto; }
+                .outil-critiques .des .number { width: 100%; height: 50px; font-size: 1.1rem; }
 
-                .outil-critiques .page .option {
-                    width: 100%;
-                }
-
-                .outil-critiques .des .label {
-                    width: 100%;
-                    margin-bottom: 5px;
-                }
-
-                .outil-critiques .effet {
-                    min-height: 200px;
-                }
+                .outil-critiques .effet { min-height: 180px; }
             }
         </style>
     </head>
@@ -235,6 +279,8 @@
     <body>
 
         <div class="outil-critiques">
+            <h1>Tables de critiques</h1>
+            <div class="ornement" aria-hidden="true"></div>
 
             <!-- Tabs -->
             <div class="tabs">
