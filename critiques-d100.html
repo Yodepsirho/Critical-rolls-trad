@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tables de critiques D100</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=EB+Garamond:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --nuit: #17100b;
+    --cuir: #2e1b10;
+    --cuir-clair: #4a2d1a;
+    --parchemin: #efe0bb;
+    --parchemin-clair: #f8ecc9;
+    --encre: #2b1a0e;
+    --sang: #7a1f1a;
+    --or: #c9a13b;
+    --or-clair: #e8c766;
+    --titre: "Cinzel", "Trajan Pro", Georgia, "Times New Roman", serif;
+    --texte: "EB Garamond", Georgia, "Times New Roman", serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 20px 14px 40px;
+    display: flex;
+    justify-content: center;
+    font-family: var(--texte);
+    font-size: 1.1rem;
+    color: var(--encre);
+    background: radial-gradient(ellipse at top, #3a2517 0%, var(--nuit) 70%) fixed;
+  }
+  main { width: 100%; max-width: 900px; }
+  h1 {
+    margin: 8px 0 10px;
+    text-align: center;
+    font-family: var(--titre);
+    font-size: clamp(1.6rem, 5vw, 2.4rem);
+    letter-spacing: .04em;
+    color: var(--or-clair);
+    text-shadow: 0 2px 0 #000, 0 0 18px rgba(201, 161, 59, .35);
+  }
+  .ornement {
+    position: relative;
+    height: 2px;
+    max-width: 480px;
+    margin: 0 auto 24px;
+    background: linear-gradient(90deg, transparent, var(--or), transparent);
+  }
+  .ornement::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 12px;
+    height: 12px;
+    background: var(--sang);
+    border: 2px solid var(--or);
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+  .onglets { display: flex; gap: 6px; padding: 0 10px; position: relative; z-index: 1; }
+  .onglets button {
+    flex: 1;
+    padding: 12px 8px;
+    font-family: var(--titre);
+    font-weight: 700;
+    font-size: clamp(.85rem, 2.6vw, 1.05rem);
+    color: var(--or-clair);
+    background: linear-gradient(var(--cuir-clair), var(--cuir));
+    border: 2px solid var(--or);
+    border-bottom: 0;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+  }
+  .onglets button:hover { filter: brightness(1.25); }
+  .onglets button[aria-selected="true"] {
+    margin-bottom: -3px;
+    color: var(--sang);
+    background: var(--parchemin);
+  }
+  .onglets button:focus-visible { outline: 3px solid var(--or-clair); outline-offset: 2px; }
+  .panneau {
+    padding: 18px;
+    background: var(--parchemin);
+    border: 3px double var(--or);
+    border-radius: 0 0 6px 6px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, .65), inset 0 0 50px rgba(110, 60, 15, .35);
+  }
+  .recherche {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--titre);
+    font-weight: 700;
+    color: var(--sang);
+  }
+  .recherche input {
+    width: 90px;
+    padding: 8px;
+    font: 1.1rem var(--texte);
+    color: var(--encre);
+    background: #fbf3da;
+    border: 2px solid var(--cuir-clair);
+    border-radius: 4px;
+  }
+  .tirage {
+    padding: 8px 14px;
+    font: 700 .95rem var(--titre);
+    color: var(--or-clair);
+    background: linear-gradient(#9a2a22, var(--sang));
+    border: 2px solid var(--or);
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .tirage:hover { filter: brightness(1.2); }
+  input:focus-visible, .tirage:focus-visible { outline: 3px solid var(--sang); outline-offset: 2px; }
+  .effet {
+    margin: 16px 0;
+    padding: 14px 16px;
+    min-height: 3.4em;
+    font-size: 1.15rem;
+    color: var(--encre);
+    background: var(--parchemin-clair);
+    border: 2px solid var(--sang);
+    border-radius: 4px;
+    box-shadow: inset 0 0 0 3px var(--parchemin-clair), inset 0 0 0 4px var(--or);
+  }
+  .effet strong { font-family: var(--titre); color: var(--sang); }
+  .tableau-conteneur {
+    max-height: 60vh;
+    overflow: auto;
+    background: var(--parchemin-clair);
+    border: 2px solid var(--cuir-clair);
+    border-radius: 4px;
+  }
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    position: sticky;
+    top: 0;
+    padding: 10px 12px;
+    text-align: left;
+    font-family: var(--titre);
+    color: var(--or-clair);
+    background: var(--cuir);
+    border-bottom: 2px solid var(--or);
+  }
+  td {
+    padding: 9px 12px;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid rgba(90, 50, 20, .3);
+  }
+  td:first-child { white-space: nowrap; font-family: var(--titre); font-weight: 700; color: var(--sang); }
+  td strong { font-family: var(--titre); font-size: .95em; color: #4a1a12; }
+  tbody tr:nth-child(even) { background: rgba(150, 100, 40, .12); }
+  tbody tr.actif { background: var(--or-clair); box-shadow: inset 5px 0 0 var(--sang); color: #2b0d08; }
+  [hidden] { display: none; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Tables de critiques</h1>
+  <div class="ornement" aria-hidden="true"></div>
+  <div class="onglets" role="tablist">
+    <button role="tab" id="onglet-reussite" aria-selected="true" aria-controls="panneau">Succès critiques</button>
+    <button role="tab" id="onglet-echec" aria-selected="false" aria-controls="panneau">Échecs critiques</button>
+  </div>
+  <section class="panneau" id="panneau" role="tabpanel">
+    <div class="recherche">
+      <label for="d100">Résultat du d100 :</label>
+      <input id="d100" type="number" min="1" max="100" inputmode="numeric">
+      <button class="tirage" id="tirage" type="button">Lancer le d100</button>
+    </div>
+    <div class="effet" id="effet" aria-live="polite">Saisis un résultat entre 1 et 100, ou lance le dé.</div>
+    <div class="tableau-conteneur">
+      <table>
+        <thead><tr><th>D100</th><th>Effet</th></tr></thead>
+        <tbody id="corps"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<script>
+// Chaque ligne : [minimum, maximum, titre, texte]
+const TABLES = {
+  reussite: [
+    [1, 5, "Manœuvre ridicule", "Tous les alliés avec une perception passive de 12 ou plus gagnent +2 au prochain jet."],
+    [6, 9, "Timing retardé", "Attaquer immédiatement le même adversaire avec un désavantage."],
+    [10, 15, "Grand Ouvert", "Cible incapacitée pour le prochain tour. Relancer sur 1 ou de 2 au prochain jet de dégâts."],
+    [16, 19, "Coup et Garde", "+2CA pour 1 round. Relancer sur 1 ou de 2 au prochain jet de dégâts."],
+    [20, 25, "Découpage sauvage", "Ignorer les rés. aux dégâts. Relancer sur 1 ou de 2 au prochain jet de dégâts."],
+    [26, 29, "Représailles", "Attaquer immédiatement le même adversaire. Relancer sur 1 ou de 2 au prochain jet de dégâts."],
+    [30, 35, "Assaut impitoyable", "+1 dé de dégâts."],
+    [36, 39, "Attaque défensive", "+4 CA pour 1 round. +1 dé de dégâts."],
+    [40, 45, "Blessure traumatisante", "Ignorer les rés. aux dégâts. +1 dé de dégâts."],
+    [46, 49, "Victimisé", "Attaque d’opportunité auto. +1 dé de dégâts."],
+    [50, 53, "Chute catastrophique", "Jet DD13 DEX ou à terre. +1 dé de dégâts."],
+    [54, 56, "Déboussolé", "Jet DD 13 CON ou Étourdi pour 1 round. +1 dé de dégâts."],
+    [57, 59, "Poussière dans l'œil", "Jet DD 13 SAG ou aveuglé pour 1 round. +1 dé de dégâts."],
+    [60, 63, "Hémorragie", "1d6 dégâts par round. +1 dé de dégâts."],
+    [64, 65, "Déroute", "L’attaquant est avantagé en mêlée et le défenseur est désavantagé pour 1 round. +1 dé de dégâts."],
+    [66, 66, "Les Dieux ont parlé", "Lancez le dé de dégât 2 fois et prenez le meilleur résultat."],
+    [67, 69, "Momentum", "Attaquer immédiatement le même adversaire. +1 dé de dégâts."],
+    [70, 73, "Frappe puissante", "Ignorer les résistances aux dégâts. Double Dégâts."],
+    [74, 76, "Démonstration inspirante", "Tous les alliés sont avantagés au prochain lancer. Double Dégâts."],
+    [77, 79, "Vertigo", "Fait tomber tous les objets en main. Repoussé 1d4 cases. Jet de Sauvegarde DD15 DEX ou à terre. Double Dégâts."],
+    [80, 83, "Réaction perplexe", "Cible incapacitée 1 round, provoque attaques d’opportunité. Double Dégâts."],
+    [84, 86, "Reste à terre !", "À terre et étourdi pendant 1 round. Jet DD 15 CON ou mvts réduits de moitié jusqu’au prochain repos. Double Dégâts."],
+    [87, 89, "Contre astucieux", "Attaquer immédiatement le même adversaire. Double Dégâts."],
+    [90, 93, "Empalé", "1d10 dégâts d’hémorragie par round. Etourdi 1 round. Triple Dégâts."],
+    [94, 96, "Conspiration", "Le prochain coup sur un adversaire est critique. Aveuglé 1 round. Triple Dégâts."],
+    [97, 98, "Démoralisé", "À terre. Etourdi 2 rounds. Triple Dégâts."],
+    [99, 99, "KO", "Jet DD 16 CON ou inconscient. À terre. Etourdi 2 rounds. Triple Dégâts."],
+    [100, 100, "Coup Ultime", "Jet DD 18 CON ou mort. À terre 1d4 cases plus loin. Etourdi 3 rounds. Quadruple Dégâts."]
+  ],
+  echec: [
+    [1, 1, "Seppuku", "À terre. Désarmé (arme à 1d4 cases). Etourdi 2 rounds. Coup critique sur soi-même."],
+    [2, 3, "Échec Total", "À terre. Désarmé (arme à 1d4 cases). Etourdi 1 round. Coup critique sur soi-même."],
+    [4, 6, "Contre prévisible", "À terre. Désarmé. Etourdi 1 round. Dégâts sur soi-même."],
+    [7, 9, "Bazar sanglant", "Saigne 1d6 par round. Désarmé. Etourdi 1 round. Dégâts sur soi-même."],
+    [10, 16, "Touché au ventre, souffle coupé", "Dégâts sur soi-même. Incapacité pour 1 round."],
+    [17, 19, "Faire pencher la balance", "L’adversaire est avantagé et l’attaquant est désavantagé pour 1 round."],
+    [20, 23, "Désarmement puissant", "Désarmé (arme à 1d6 cases). Désavantagé 1 round."],
+    [24, 26, "Manoeuvre atroce", "L’adversaire le plus proche obtient une attaque immédiate avantagée."],
+    [27, 29, "Plus ils sont gros...", "Repoussé 1d3 cases avant de tomber à terre."],
+    [30, 33, "Maladresse", "Désarmé. Désavantage au prochain jet de dé."],
+    [34, 36, "Tomber la garde", "L’adversaire le plus proche obtient une attaque immédiate."],
+    [37, 39, "Vision troublée", "Aveuglé 1 round."],
+    [40, 45, "Perte de motivation", "Le prochain jet de Sauvegarde échoue automatiquement."],
+    [46, 49, "Coup partiel", "Dégâts sur soi-même (réduits de moitié)."],
+    [50, 55, "Grand ouvert", "Provoque une attaque d’opportunité de l’adversaire en mélée le plus proche."],
+    [56, 60, "Mauvais Karma", "Le prochain jet de sauvegarde du combat est désavantagé."],
+    [61, 67, "Lent à répondre", "Pas d’action bonus ou de réaction au prochain round."],
+    [68, 80, "Récupération difficile", "Dernier à jouer le prochain round."],
+    [81, 100, "Rien d’inhabituel n’arrive.", ""]
+  ]
+};
+
+const onglets = { reussite: document.getElementById('onglet-reussite'), echec: document.getElementById('onglet-echec') };
+const corps = document.getElementById('corps');
+const champ = document.getElementById('d100');
+const effet = document.getElementById('effet');
+const MESSAGE_INITIAL = 'Saisis un résultat entre 1 et 100, ou lance le dé.';
+let table = 'reussite';
+
+function libelle(ligne) {
+  return ligne[0] === ligne[1] ? String(ligne[0]) : ligne[0] + '-' + ligne[1];
+}
+
+function dessiner() {
+  corps.innerHTML = '';
+  TABLES[table].forEach(function (ligne) {
+    const tr = document.createElement('tr');
+    tr.dataset.min = ligne[0];
+    tr.dataset.max = ligne[1];
+    const plage = document.createElement('td');
+    plage.textContent = libelle(ligne);
+    const texte = document.createElement('td');
+    const titre = document.createElement('strong');
+    titre.textContent = ligne[2];
+    texte.appendChild(titre);
+    if (ligne[3]) texte.appendChild(document.createTextNode(' ' + ligne[3]));
+    tr.appendChild(plage);
+    tr.appendChild(texte);
+    corps.appendChild(tr);
+  });
+  afficher();
+}
+
+function afficher() {
+  const valeur = Number(champ.value);
+  corps.querySelectorAll('tr.actif').forEach(function (tr) { tr.classList.remove('actif'); });
+  if (!Number.isInteger(valeur) || valeur < 1 || valeur > 100) {
+    effet.textContent = champ.value === '' ? MESSAGE_INITIAL : 'Le résultat doit être un nombre entre 1 et 100.';
+    return;
+  }
+  const ligne = TABLES[table].find(function (l) { return valeur >= l[0] && valeur <= l[1]; });
+  effet.textContent = '';
+  const titre = document.createElement('strong');
+  titre.textContent = valeur + ' — ' + ligne[2];
+  effet.appendChild(titre);
+  if (ligne[3]) effet.appendChild(document.createTextNode(' ' + ligne[3]));
+  const tr = Array.prototype.find.call(corps.children, function (r) { return Number(r.dataset.min) === ligne[0]; });
+  tr.classList.add('actif');
+  tr.scrollIntoView({ block: 'nearest' });
+}
+
+function choisirTable(nom) {
+  table = nom;
+  Object.keys(onglets).forEach(function (cle) {
+    onglets[cle].setAttribute('aria-selected', String(cle === nom));
+  });
+  dessiner();
+}
+
+onglets.reussite.addEventListener('click', function () { choisirTable('reussite'); });
+onglets.echec.addEventListener('click', function () { choisirTable('echec'); });
+champ.addEventListener('input', afficher);
+document.getElementById('tirage').addEventListener('click', function () {
+  champ.value = Math.floor(Math.random() * 100) + 1;
+  afficher();
+});
+
+dessiner();
+</script>
+</body>
+</html>
